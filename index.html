@@ -1,350 +1,422 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta name="naver-site-verification" content="caaaa3dba85b71bab3fd9e093d3648018086760d"/>
-        <meta name="google-site-verification" content="pN0pG-gsYLuNfMRhtOpIjaW8Df_-iJwKayM9DIbl878"/>
-        <meta http-equiv="X-Content-Type-Options" content="nosniff">
-        <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-        <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-        <meta http-equiv="Feature-Policy" content="geolocation 'self'; camera 'none'; microphone 'none';">
-        <!-- 추가적인 보안 헤더 -->
-        <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload">
-        <meta http-equiv="Expect-CT" content="enforce, max-age=30">
-        <!-- 서버 측 캐시 제어 -->
-        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-        <meta http-equiv="Pragma" content="no-cache">
-        <meta http-equiv="Expires" content="0">
-        <!--기본 설정-->
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!--naver 검색-->
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="Main Website">
-        <meta property="og:description" content="여러가지 프로젝트들과 도구들을 업로드하는 저장소.">
-        <meta property="op:url" content="http://main.vieepanouie.kro.kr">
-        <!--google 검색-->
-        <meta name="Description" content="여러가지 프로젝트들과 도구들을 업로드하는 저장소."/>
-        <meta name="Date" content="2024-08-01T00:18:30+09:00"/>
-        <!--프로젝트 제작일-->
-        <meta http-equiv="Subject" content="저장소"/>
-        <meta http-equiv="Author" content="anion15"/>
-        <meta http-equiv="publisher" content="anion15"/>
-        <meta http-equiv="Other Agent" content="anion15"/>
-        <meta http-equiv="Generator" content="Visual Studio Code"/>
-        <meta http-equiv="Reply-To" content="vieepanouie.help@gmail.com"/>
-        <meta http-equiv="Email" content="vieepanouie.help@gmail.com"/>
-        <link rel="canonical" href="http://main.vieepanouie.kro.kr">
-        <!--제목, 아이콘, 스크립트 설정-->
-        <title>Main Website</title>
-        <meta name="keywords" content="프로젝트, 도구, QR 코드 생성기, 비밀번호 생성기, 웹 개발, 학생 프로젝트, Projects, Tools, QR Code Generator, Password Generator, Web Development, Student Projects">
-        <script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=1839"></script>
-        <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3648/3648601.png" type="image/png">
-        <style>
-            html, body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                height: 100%;
-                background-color: #333;
-                /* 수정된 배경색 */
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--search SEO-->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Chat Rooms - Interactive">
+    <meta property="og:description" content="Chat room introduction and download">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/4389/4389181.png">
+    <meta property="og:url" content="http://hello0909.dothome.co.kr/download.html">
 
-            body {
-                font-family: Arial, sans-serif;
-            }
+    <title>Chat Rooms - Interactive</title>
+    <script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=10235"></script>
+<script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=82063"></script>
+<script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=10810"></script>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4389/4389181.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #121212;
+            color: #e0e0e0;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            -ms-overflow-style: none;
+        }
+        
+        ::-webkit-scrollbar {
+            display: none;
+        }
 
-            .container {
-                width: 100%;
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 0 20px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                box-sizing: border-box;
-            }
+        ::selection {
+            color: #1e1e1e;
+            background-color: rgb(213, 213, 213);
+        }
 
-            header {
-                background: #292929;
-                color: #fff;
-                height: 100px;
-                width: 100%;
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 1000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-                box-sizing: border-box;
-                border-bottom: #333 3px solid;
-            }
+        section {
+            padding: 80px 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        canvas {
+            width: 98vmin;
+            height: 98vmin;
+        }
 
-            header h1 {
-                margin: 0;
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            z-index: 9999;
+            transition: all 0.3s;
+        }
+
+        .intro {
+            height: 100vh;
+            background: linear-gradient(to bottom, #1e1e1e, #121212);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #e0e0e0;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .intro::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.4), rgba(0,0,0,0.8));
+            z-index: 0;
+        }
+
+        .intro h1 {
+            font-size: 4em;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .intro p {
+            font-size: 1.5em;
+            margin: 20px 0;
+            color: #b0b0b0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #b0b0b0;
+            z-index: 1;
+        }
+
+        .scroll-indicator p {
+            margin: 0;
+            font-size: 1.2em;
+            margin-bottom: 15px; /* 간격 조정 */
+        }
+
+        .scroll-indicator .fa-arrow-down {
+            font-size: 2.5em;
+            animation: bounce 2s infinite, shake 1s infinite;
+        }
+        
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            70% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(-12px);
+            }
+        }
+
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-5px);
+            }
+            50% {
+                transform: translateY(5px);
+            }
+            75% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .features {
+            background: #1e1e1e;
+            padding: 40px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .feature {
+            flex: 1 1 30%;
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+            background: #2c2c2c;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            color: #e0e0e0;
+            transition: transform 0.3s, box-shadow 0.3s, opacity 0.5s;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .feature[data-aos="fade-up"] {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+        }
+
+        .feature img {
+            width: 80px;
+            margin-bottom: 20px;
+        }
+
+        .download {
+            background: #1e1e1e;
+            color: #e0e0e0;
+            padding: 60px;
+            text-align: center;
+        }
+
+        .download-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .download-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-5px);
+        }
+
+        footer {
+            padding: 20px;
+            background: #1e1e1e;
+            color: #999;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .feature {
+                flex: 1 1 100%;
+                margin: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .intro h1 {
                 font-size: 2.5em;
-                /* Adjusted for better visibility */
             }
 
-            nav {
-                width: 100%;
-                padding-top: 140px;
-                /* Adjusted to avoid overlap with fixed header */
+            .intro p {
+                font-size: 1em;
             }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <img src="loading.gif" loop="infinite" />
+    </div>
+    <section class="intro">
+        <div class="content">
+            <h1 data-aos="fade-down" data-aos-duration="1500" 
+            style="text-shadow: 0px 0px 10px White">Chat Rooms</h1>
+            <p data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">혁신적인 소통의 시작, Chat Rooms와 함께하세요.</p>
+        </div>
+    <canvas id="scene"></canvas>
+        <div class="scroll-indicator">
+            <p>Scroll Down</p>
+            <i class="fa fa-arrow-down"></i>
+        </div>
+    </section>
+    <section class="features">
+        <div class="feature" data-aos="fade-up" data-aos-duration="1000">
+            <p>&nbsp;</p>
+            <img src="https://static.vecteezy.com/system/resources/previews/009/972/879/large_2x/live-streaming-online-sign-symbol-design-free-png.png" alt="Real-time" width="100" height="40">
+            <h2>실시간 채팅</h2>
+            <p>5개의 채팅서버에서 채팅을 실시간으로 확인하세요.</p>
+            <p>언제 어디서나 연결된 경험을 제공합니다.</p>
+        </div>
+        <div class="feature" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/PuTTY_Icon.svg" alt="Platform" width="100" height="100">
+            <h2>다양한 플랫폼 지원</h2>
+            <p>Android와 Windows에서 ChatRooms를 만나보세요.</p>
+            <p>언제 어디서나 간편하게 이용할 수 있습니다.</p>
+            <a style="font-size: 10px;"> (추후 macOS, Linux 지원예정 2024/12 이후)</a>
+        </div>
+        <div class="feature" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Windows_Defender_logo.svg" alt="Security" width="100" height="100">
+            <h2>보안 및 프라이버시</h2>
+            <p>귀하의 개인 정보는 google의 firebase에 AES-256 암호화로 안전하게 보호됩니다.</p>
+        </div>
+    </section>
+    <section class="download" data-aos="fade-up" data-aos-duration="1000">
+        <h2>지금 바로 다운로드하세요</h2>
+        <a href="http://hello0909.dothome.co.kr/ChatRooms.debug.v3.0.0.apk" class="download-button" data-aos="fade-up" data-aos-delay="300">Download for Android  <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg" alt="Android logo" width="20" height="20"></a>
+        <a href="http://hello0909.dothome.co.kr/chatrooms Setup 4.5.0.exe" class="download-button" data-aos="fade-up" data-aos-delay="500">Download for Windows  <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2012.svg" alt="Android logo" width="20" height="20"></a>
+    </section>
+    <footer>
+        <p>Email: <a href="mailto: vieepanouie.help@gmail.com" style="color: #999;">vieepanouie.help@gmail.com</a></p>
+        <p>개발자의 <a href="http://main.vieepanouie.kro.kr" style="color: #999;">다른 사이트</a> 놀러가기</p>
+        <p>&nbsp;</p>
+        <strong><p>&copy; 2024-<span id="current-year"></span> <a href="https://github.com/anion15" style="color: #999;">anion15</a>. All rights reserved.</p></strong>
+    </footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        
+        AOS.init({
+            once: true,
+            duration: 1200
+        });
 
-            nav ul {
-                margin: 0;
-                padding: 0;
-                list-style: none;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-            }
-
-            nav ul li {
-                margin: 20px 0;
-                /* Increase margin to separate items */
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                flex-wrap: wrap;
-                /* Wrap items to avoid overflow */
-            }
-
-            nav ul li a {
-                color: #fff;
-                text-decoration: none;
-                display: block;
-                width: 100%;
-                /* Full width for responsiveness */
-                max-width: 350px;
-                /* Increased max-width for larger screens */
-                padding: 15px;
-                /* Adjust padding for better sizing */
-                background-color: #007bff;
-                /* Change button color */
-                border: 1px solid #007bff;
-                /* Match border color */
-                transition: background 0.3s ease, border 0.3s ease;
-                text-align: center;
-                font-size: 1.2em;
-                /* Adjust font size for better readability */
-                border-radius: 5px;
-                box-sizing: border-box;
-                margin-bottom: 10px;
-                /* Space between button and description */
-            }
-
-            nav ul li a:hover {
-                background: #0056b3;
-                /* Change hover color */
-                border: 1px solid #0056b3;
-                /* Match border color */
-            }
-
-            nav ul li .description {
-                width: 100%;
-                /* Full width for responsiveness */
-                max-width: 350px;
-                /* Increased max-width for larger screens */
-                padding: 10px;
-                background-color: #555;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                text-align: center;
-                color: #fff;
-                box-sizing: border-box;
-                margin-bottom: 10px;
-                /* Space between description and iframe */
-            }
-
-            nav ul li iframe {
-                width: 100%;
-                /* Full width for responsiveness */
-                max-width: 350px;
-                /* Increased max-width for larger screens */
-                height: 200px;
-                border: 1px solid #ccc;
-                pointer-events: none;
-                /* Prevent interaction */
-                border-radius: 5px;
-                box-sizing: border-box;
-            }
-
-            footer {
-                background: #292929;
-                color: #fff;
-                text-align: center;
-                padding: 20px;
-                box-sizing: border-box;
-                border-top: #333 3px solid;
-            }
-
-            /* Hide scrollbar */
-            ::-webkit-scrollbar {
-                width: 0;
-                height: 0;
-            }
-
-            body {
-                overflow: -moz-scrollbars-none;
-                -ms-overflow-style: none;
-                /* IE and Edge */
-            }
-
-            body::-webkit-scrollbar {
-                display: none;
-                /* Safari and Chrome */
-            }
-
-            /* Responsive styles */
-            @media (max-width: 768px) {
-                header h1 {
-                    font-size: 2em;
-                    /* Smaller header text on mobile */
-                }
-
-                nav ul li {
-                    flex-direction: column;
-                }
-
-                nav ul li a, nav ul li .description, nav ul li iframe {
-                    width: 100%;
-                    /* Full width in mobile view */
-                    max-width: none;
-                    /* Remove max-width on mobile */
-                    font-size: 1em;
-                    /* Adjust font size for mobile */
-                }
-
-                nav ul li iframe {
-                    height: 150px;
-                    /* Reduce height in mobile view */
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <div class="container">
-                <h1>Main Website</h1>
-            </div>
-        </header>
-        <nav>
-            <div class="container">
-                <ul>
-                    <li>
-                        <a href="http://base64.vieepanouie.kro.kr">
-                            <b>Go to: "base64"</b>
-                        </a>
-                        <div class="description">You can encode and decode with base64. Copy it easily and use it conveniently.</div>
-                        <iframe src="http://base64.vieepanouie.kro.kr"></iframe>
-                    </li>
-                    <li>
-                        <a href="http://LoremIpsumGenerator.vieepanouie.kro.kr">
-                            <b>Go to: "Lorem Ipsum Generator"</b>
-                        </a>
-                        <div class="description">Lorem ipsum is standard fill text used to present visual representations. Generate lorem ipsum by defining the number of words and copy it to the clipboard.</div>
-                        <iframe src="http://LoremIpsumGenerator.vieepanouie.kro.kr"></iframe>
-                    </li>
-                    <li>
-                        <a href="http://QRCodeGenerator.vieepanouie.kro.kr">
-                            <b>Go to: "QR Code Generator"</b>
-                        </a>
-                        <div class="description">If you enter a URL, it will generate a QR code. You can also save the generated QR code.</div>
-                        <iframe src="http://QRCodeGenerator.vieepanouie.kro.kr"></iframe>
-                    </li>
-                    <li>
-                        <a href="http://passwordgen.vieepanouie.kro.kr">
-                            <b>Go to: "Password Generator"</b>
-                        </a>
-                        <div class="description">Create strong and secure passwords with this password generator. Customize length and complexity to fit your needs.</div>
-                        <iframe src="http://passwordgen.vieepanouie.kro.kr"></iframe>
-                    </li>
-                    <li>
-                        <a href="http://rainbow.vieepanouie.kro.kr">
-                            <b>Go to: "rainbow changing colors"</b>
-                        </a>
-                        <div class="description">The screen color keeps changing. ⚠️Be careful because this can cause photosensitivity syndrome. (The speed shown on the preview screen is slower than the actual speed.)</div>
-                        <iframe src="http://rainbowpreviews.vieepanouie.kro.kr"></iframe>
-                    </li>
-                    <li>
-                        <a href="http://signuptest.vieepanouie.kro.kr">
-                            <b>Go to: "Signuptest"</b>
-                        </a>
-                        <div class="description">This is the signup test page. Any information you enter will not be saved in the backend, and this project is just for formal testing purposes.</div>
-                        <iframe src="http://signuptest.vieepanouie.kro.kr"></iframe>
-                    </li>
-                    <li>
-                        <a href="http://web.vieepanouie.kro.kr">
-                            <b>Go to: "web"</b>
-                        </a>
-                        <div class="description">This is a web page. You can use the web within the web. Enter the url to go to the page.</div>
-                        <iframe src="http://web.vieepanouie.kro.kr"></iframe>
-                    </li>
-                    <li>
-                        <a href="http://recaptcha.vieepanouie.kro.kr">
-                            <b>Go to: "recaptcha"</b>
-                        </a>
-                        <div class="description">This page tests reCAPTCHA.</div>
-                        <iframe src="http://recaptcha.vieepanouie.kro.kr"></iframe>
-                    </li>
-                    <li>
-                        <a href="http://tictactoe.vieepanouie.kro.kr">
-                            <b>Go to: "tictactoe"</b>
-                        </a>
-                        <div class="description">Play Tic Tac Toe here. You win if you have 3 lines in any direction horizontally, vertically, or diagonally.</div>
-                        <iframe src="http://tictactoe.vieepanouie.kro.kr"></iframe>
-                    </li>
-                    <li>
-                        <a href="http://anion15.vieepanouie.kro.kr">
-                            <b>Go to: "anion15"</b>
-                        </a>
-                        <div class="description">My personal webpage. This page includes some links to my other projects.</div>
-                        <iframe src="http://anion15.vieepanouie.kro.kr"></iframe>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <footer>
-            <div class="container">
-                <p>New projects will be uploaded almost on a daily basis.</p>
-                <p>The current owner of this site is a student.</p>
-                <address>
-                    <a href="mailto:vieepanouie.help@gmail.com">
-                        <b>vieepanouie.help@gmail.com</b>
-                    </a>
-                </address>
-                <br/>
-                <a href="http://updatehistory.vieepanouie.kro.kr">
-                    <b>
-                        <abbr title="Go to: Update history">Update history</abbr>
-                    </b>
-                </a>
-                <br/>
-                <br/>
-                <br/>
-                <p translate="no">
-                    &copy;2024-<span id="current-year"></span>
-                    <a href="https://github.com/anion15">anion15</a>
-                    . Licensed under the 
-                    <a href="http://mitlicense.vieepanouie.kro.kr">
-                        <abbr title="View MIT License">MIT License</abbr>
-                    </a>
-                    .
-                </p>
-            </div>
-        </footer>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
                 var currentYear = new Date().getFullYear();
                 document.getElementById('current-year').textContent = currentYear;
             });
-        </script>
-    </body>
+        
+        window.onload = function(){
+            document.querySelector('.loading').style.visibility = 'hidden'
+            document.querySelector('.loading').style.opacity = 0
+        }
+
+        console.clear();
+
+const canvas = document.querySelector('#scene');
+canvas.width = canvas.clientWidth;
+canvas.height = canvas.clientHeight;
+const ctx = canvas.getContext('2d');
+
+if (window.devicePixelRatio > 1) {
+    canvas.width = canvas.clientWidth * 2;
+    canvas.height = canvas.clientHeight * 2;
+    ctx.scale(2, 2);
+}
+
+let width = canvas.clientWidth;
+let height = canvas.clientHeight;
+let rotation = 0;
+let dots = [];
+
+const DOTS_AMOUNT = 1000;
+const DOT_RADIUS = 2; // Reduced size
+let GLOBE_RADIUS = width * 0.7;
+let GLOBE_CENTER_Z = -GLOBE_RADIUS;
+let PROJECTION_CENTER_X = width / 2;
+let PROJECTION_CENTER_Y = height / 2;
+let FIELD_OF_VIEW = width * 0.8;
+
+class Dot {
+    constructor(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.xProject = 0;
+        this.yProject = 0;
+        this.sizeProjection = 0;
+    }
+    project(sin, cos) {
+        const rotX = cos * this.x + sin * (this.z - GLOBE_CENTER_Z);
+        const rotZ = -sin * this.x + cos * (this.z - GLOBE_CENTER_Z) + GLOBE_CENTER_Z;
+        this.sizeProjection = FIELD_OF_VIEW / (FIELD_OF_VIEW - rotZ);
+        this.xProject = (rotX * this.sizeProjection) + PROJECTION_CENTER_X;
+        this.yProject = (this.y * this.sizeProjection) + PROJECTION_CENTER_Y;
+    }
+    draw(sin, cos) {
+        this.project(sin, cos);
+        ctx.beginPath();
+        ctx.arc(this.xProject, this.yProject, DOT_RADIUS * this.sizeProjection, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fillStyle = 'white'; // Set dot color to white
+        ctx.fill();
+    }
+}
+
+function createDots() {
+    dots.length = 0;
+    for (let i = 0; i < DOTS_AMOUNT; i++) {
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos((Math.random() * 2) - 1);
+        const x = GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
+        const y = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
+        const z = (GLOBE_RADIUS * Math.cos(phi)) + GLOBE_CENTER_Z;
+        dots.push(new Dot(x, y, z));
+    }
+}
+
+function render(a) {
+    ctx.clearRect(0, 0, width, height);
+    rotation = a * 0.0004;
+    const sineRotation = Math.sin(rotation);
+    const cosineRotation = Math.cos(rotation);
+    for (var i = 0; i < dots.length; i++) {
+        dots[i].draw(sineRotation, cosineRotation);
+    }
+    window.requestAnimationFrame(render);
+}
+
+function afterResize() {
+    width = canvas.offsetWidth;
+    height = canvas.offsetHeight;
+    if (window.devicePixelRatio > 1) {
+        canvas.width = canvas.clientWidth * 2;
+        canvas.height = canvas.clientHeight * 2;
+        ctx.scale(2, 2);
+    } else {
+        canvas.width = width;
+        canvas.height = height;
+    }
+    GLOBE_RADIUS = width * 0.7;
+    GLOBE_CENTER_Z = -GLOBE_RADIUS;
+    PROJECTION_CENTER_X = width / 2;
+    PROJECTION_CENTER_Y = height / 2;
+    FIELD_OF_VIEW = width * 0.8;
+    createDots();
+}
+
+let resizeTimeout;
+function onResize() {
+    resizeTimeout = window.clearTimeout(resizeTimeout);
+    resizeTimeout = window.setTimeout(afterResize, 500);
+}
+window.addEventListener('resize', onResize);
+
+createDots();
+window.requestAnimationFrame(render);
+    </script>
+    <script>
+        console.warn("Written by anion15, by entering this site and using all services, you acknowledge and agree that unauthorized reproduction and distribution may be subject to legal punishment. (This copyright notice is effective as of September 18, 2024.)")
+        console.warn("The official service address for this html document is http://hello0909.dothome.co.kr/download.html and the author is anion15. If you delete this comment and the comment before it, it will be considered as an attempt to ignore and hide copyright and you will be subject to increased legal punishment.")
+    </script>
+</body>
 </html>
+
+<!--Written by anion15, by entering this site and using all services, you acknowledge and agree that unauthorized reproduction and distribution may be subject to legal punishment. (This copyright notice is effective as of September 18, 2024.)-->
+
+<!-- The official service address for this html document is http://hello0909.dothome.co.kr/download.html and the author is anion15. If you delete this comment and the comment before it, it will be considered as an attempt to ignore and hide copyright and you will be subject to increased legal punishment. -->
