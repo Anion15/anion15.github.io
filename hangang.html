@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한강,</title>
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="한강,">
+    <meta property="og:description" content="평균 수온, 체감 온도, 열지수를 기반으로  나타내는 한강온도.">
+    <meta property="og:url" content="http://hello0909.dothome.co.kr/hangang.html">
+<script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=308"></script>
+<script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=226"></script>
+</head>
+<style>
+    body{
+        background-color: rgb(242, 242, 242);
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    ::-webkit-scrollbar {
+        display: none; 
+    }
+
+    h1, h3{
+        text-align: center;
+        transform : rotate(0.04deg); 
+
+    }
+    p{
+        text-align: center;
+        transform : rotate(0.04deg);
+    }
+    a{
+        font-size: 60vmax;
+    }
+    samp{
+        font-size: 10vmax;
+    }
+</style>
+<body>
+    <div id="average-temperature" style="display: none;"></div>
+    <div id="weather-info"></div>
+    <div id="result"></div>
+
+    <script>
+        async function fetchAverageTemperature() {
+            try {
+                const response = await fetch("https://api.hangang.life");
+                if (!response.ok) {
+                    throw new Error("네트워크 응답에 문제가 있습니다.");
+                }
+
+                const data = await response.json();
+                if (data && data.DATAs && data.DATAs.DATA && data.DATAs.DATA.HANGANG) {
+                    const rivers = data.DATAs.DATA.HANGANG;
+                    let totalTemp = 0;
+                    let count = 0;
+
+                    for (const river in rivers) {
+                        totalTemp += rivers[river].TEMP;
+                        count++;
+                    }
+
+                    const averageTemp = (totalTemp / count).toFixed(2);
+                    document.getElementById("average-temperature").textContent = `평균 수온: ${averageTemp}°C`;
+
+                    return parseFloat(averageTemp);
+                } else {
+                    throw new Error("예상치 못한 데이터 구조입니다.");
+                }
+            } catch (error) {
+                document.getElementById("average-temperature").textContent = "수온 정보를 가져오지 못했습니다.";
+                console.error("오류:", error);
+            }
+        }
+
+
+        async function getWeather() {
+            const apiKey = "591fb432cef605ec5fe65cd0ac00c0b1"; 
+            const city = "Seoul";
+            const lang = "kr";
+            const api = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&lang=${lang}&units=metric`;
+
+            try {
+                const response = await fetch(api);
+                if (!response.ok) {
+                    throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                const weatherInfo = `
+                    
+                `;
+
+                document.getElementById('weather-info').innerHTML = weatherInfo;
+
+                return {
+                    temp: data.main.temp,
+                    feels_like: data.main.feels_like,
+                    humidity: data.main.humidity,
+                    wind_speed: data.wind.speed
+                }; 
+
+            } catch (error) {
+                console.error("API 요청 실패:", error);
+                document.getElementById('weather-info').innerText = "날씨 정보를 가져오지 못했습니다.";
+            }
+        }
+
+        
+        function calculateFeelings(averageTemp, weatherData) {
+            const { temp, wind_speed, humidity } = weatherData;
+            const windChill = 13.12 + 0.6215 * temp - 11.37 * Math.pow(wind_speed, 0.16) + 0.3965 * temp * Math.pow(wind_speed, 0.16);
+            const fahrenheitTemp = (temp * 9 / 5) + 32;
+            const HI = -42.379 + 2.04901523 * fahrenheitTemp + 10.14333127 * humidity - 0.22475541 * fahrenheitTemp * humidity - 6.83783 * Math.pow(10, -3) * Math.pow(fahrenheitTemp, 2) - 5.481717 * Math.pow(10, -2) * Math.pow(humidity, 2) + 1.22874 * Math.pow(10, -3) * Math.pow(fahrenheitTemp, 2) * humidity + 8.5282 * Math.pow(10, -4) * fahrenheitTemp * Math.pow(humidity, 2) - 1.99 * Math.pow(10, -6) * Math.pow(fahrenheitTemp, 2) * Math.pow(humidity, 2);
+            const averageFeel = (averageTemp + windChill + (HI - 32) * 5 / 9) / 3;
+            
+            let feeling;
+            if (averageFeel < 0) {
+                feeling = "많이 차가움";
+            } else if (averageFeel < 18) {
+                feeling = "좀 차가움";
+            } else if (averageFeel < 23) {
+                feeling = "적당히 시원함";
+            } else if (averageFeel < 25) {
+                feeling = "미지근함";
+            } else if (averageFeel < 30) {
+                feeling = "적당히 따뜻함";
+            } else if (averageFeel < 40) {
+                feeling = "좀 뜨거움";
+            } else {
+                feeling = "많이 뜨거움";
+            }
+
+
+            document.getElementById("result").innerHTML = `
+                <sapm>&nbsp;</sapm>
+                <h1 style="text-shadow: 0px 0px 1px black">한강 | ${averageTemp}°C</h1>
+                <h3><b>지금 한강은 "${feeling}" ${averageFeel.toFixed(1)}</b></h3>
+                <a>&nbsp;</a>
+                <p><b>풍속 냉각지수: ${windChill.toFixed(2)}°C</b></p>
+                <p><b>열지수: ${((HI - 32) * 5 / 9).toFixed(2)}°C</b></p>
+                <sapm>&nbsp;</sapm>
+                <h6 style="font-size: 12px; color:rgb(76, 76, 77); text-align: center;">한강 평균 온도는 1시간마다 업데이트됩니다!</h6>
+            `;
+        }
+
+        window.onload = async () => {
+            const averageTemp = await fetchAverageTemperature();
+            const weatherData = await getWeather();
+            if (averageTemp && weatherData) {
+                calculateFeelings(averageTemp, weatherData);
+            }
+        };
+    </script>
+</body>
+</html>
