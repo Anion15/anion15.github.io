@@ -45,6 +45,24 @@
         display: none;
         }
 
+        .title {
+          font-size: 48px;
+          margin: 0;
+        }
+
+        .description {
+          font-size: 14px;
+          color: gray;
+          margin: 5px 0;
+          text-indent: 20px;
+        }
+
+        @media(max-width: 768px) {
+          .description {
+            display: none;
+          }
+        }
+
         .loading {
             position: absolute;
             top: 0;
@@ -183,7 +201,11 @@
 
     <!--html code-->
     <div class="loading">
-      <p translate="no">Noise player</p>
+      <p class="title">Noise player</p>
+      <p class="description"> 
+        Github-pages Supports Web hosting<br/>
+        Web Audio Supports White Noise
+      </p>
     </div>
     <div class="container">
         <input type="radio" name="slider" id="item-1" checked>
