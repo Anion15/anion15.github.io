@@ -278,7 +278,7 @@
         // 이전에 재생 중인 오디오가 있으면 멈추고 버튼 텍스트 변경
         if (currentAudio) {
           currentAudio.pause();
-          currentAudio.currentTime = 0;
+          currentAudio.src = ""; // 스트리밍을 종료하려면 src를 비운다
           if (currentButton) {
             currentButton.textContent = '재생';
           }
@@ -321,8 +321,8 @@
     // "멈추기" 버튼 클릭 시
     stopButton.onclick = () => {
       if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
+        currentAudio.pause(); // 음악을 멈추고
+        currentAudio.src = ""; // 스트리밍을 종료
         if (currentButton) {
           currentButton.textContent = '재생';
         }
