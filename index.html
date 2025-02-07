@@ -256,11 +256,12 @@
         "your-muse-background-orchestral-hip-hop-music-for-video-full-version-294826"
     ];
 
-    let currentAudio = null; // 현재 재생 중인 오디오
+    let currentAudio = null; // 현재 재생 중인 오디오 객체
     let currentButton = null; // 현재 클릭된 버튼
 
     // 음악 리스트를 동적으로 생성
     const musicListDiv = document.getElementById('music-list');
+    const stopButton = document.getElementById('stop-btn');
 
     files.forEach(music => {
       const musicItemDiv = document.createElement('div');
@@ -294,13 +295,12 @@
         })
         .then(response => {
           if (response.ok) {
-            const audio = new Audio();
-            audio.src = url;
-            audio.type = 'audio/mpeg'; // MPEG 스트리밍 형식
-            audio.play();
+            currentAudio = new Audio();
+            currentAudio.src = url;
+            currentAudio.type = 'audio/mpeg'; // MPEG 스트리밍 형식
+            currentAudio.play();
 
             // 현재 재생 중인 오디오로 설정
-            currentAudio = audio;
             currentButton = playButton;
             playButton.textContent = '멈춤'; // 버튼 텍스트를 "멈춤"으로 변경
           } else {
@@ -313,24 +313,21 @@
         });
       };
 
-      // 멈춤 버튼 클릭 시
-      playButton.addEventListener('click', function () {
-        if (currentAudio && currentAudio.paused) {
-          currentAudio.play();
-          playButton.textContent = '멈춤';
-        } else {
-          if (currentAudio) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-          }
-          playButton.textContent = '재생';
-        }
-      });
-
       musicItemDiv.appendChild(musicName);
       musicItemDiv.appendChild(playButton);
       musicListDiv.appendChild(musicItemDiv);
     });
+
+    // "멈추기" 버튼 클릭 시
+    stopButton.onclick = () => {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        if (currentButton) {
+          currentButton.textContent = '재생';
+        }
+      }
+    };
   </script>
 </body>
 </html>
