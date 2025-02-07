@@ -1,93 +1,302 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Websites</title>
-    <style>
-        body {
-            background-color: rgb(34, 34, 34);
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #f0f0f0;
-            -ms-overflow-style: none;
-        }
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        #main-title {
-            text-align: center;
-            color: #ffffff;
-            padding: 20px;
-            background-color: #333333;
-            margin: 0;
-            font-size: 2.5rem;
-            border-bottom: 2px solid #555555;
-        }
-        #wrapper {
-            width: 90%;
-            max-width: 800px;
-            margin: 30px auto;
-            background-color: #2c2c2c;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #555555;
-            padding-bottom: 5px;
-            color: #f9a825;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            background-color: #444444;
-            margin: 10px 0;
-            padding: 15px 20px;
-            border-radius: 5px;
-            transition: transform 0.2s, background-color 0.3s;
-        }
-        li:hover {
-            transform: translateY(-5px);
-            background-color: #555555;
-        }
-        a {
-            text-decoration: none;
-            color: #f9a825;
-            font-size: 1.2rem;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>음악 스트리밍</title>
+  <style>
+    .music-item {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .music-item button {
+      padding: 5px 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .music-item button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
-    <h1 id="main-title"><b>My Websites</b></h1>
-    <div id="wrapper">
-        <h2>Website List</h2>
-        <ul>
-            <li><a href="https://anion15.github.io/noise.html" target="_blank">Noise Player</a></li>
-            <li><a href="https://anion15.github.io/quotes.html" target="_blank">Quotes</a></li>
-            <li><a href="http://hello0909.dothome.co.kr/lln.html" target="_blank">Law of large numbers</a></li>
-            <li><a href="http://hello0909.dothome.co.kr/download.html" target="_blank">Chat Rooms - Interactive</a></li>
-            <li><a href="http://hello0909.dothome.co.kr/hangang.html" target="_blank">Hangang</a></li>
-            <li><a href="http://hello0909.dothome.co.kr/mslogin.html" target="_blank">MS fake login</a></li>
-            <li><a href="http://hello0909.dothome.co.kr/votein.html" target="_blank">VOTE IN!</a></li>
-        </ul>
-    </div>
-    <h1>&nbsp;</h1>
-    <div id="wrapper">
-        <h2>Developer</h2>
-        <ul>
-            <li><a href="https://github.com/anion15" target="_blank">github - Anion 15</a></li>
-            <li><a href="https://stackoverflow.com/users/27878776/anion-15" target="_blank">stackoverflow - Anion 15</a></li>
-            <li><a href="https://replit.com/@yoon200999" target="_blank">replit - Anion 15th</a></li>
-        </ul>
-    </div>
+  <h1>음악 스트리밍 서비스</h1>
+  <div id="music-list"></div>
+
+  <script>
+    const files = [
+        "a-call-to-the-soul-149262",
+        "a-christmas-tale-263868",
+        "a-long-way-166385",
+        "acoustic-guitar-bossa-nova-295307",
+        "advertising-summer-music-288358",
+        "alone-296348",
+        "amalgam-217007",
+        "ambience-of-the-old-hall-295291",
+        "aurora-waltz-242049",
+        "awaken-136824",
+        "baby-mandala-nepalese-drill-music-169039",
+        "best-time-advertising-vlog-hip-hop-112194",
+        "better-day-186374",
+        "big-ben-house-version-background-music-for-video-full-version-289976",
+        "big-ben-house-version-background-music-for-video-vlog-1-minute-289975",
+        "big-ben-house-version-background-music-for-video-vlog-28-second-289972",
+        "big-ben-house-version-background-music-for-video-vlog-35-second-289971",
+        "big-ben-house-version-background-music-for-video-vlog-36-second-289973",
+        "big-ben-house-version-background-music-for-video-vlog-40-second-289974",
+        "breeze-groove-198409",
+        "carol-of-the-bells-xmas-background-orchestral-hip-hop-music-22-second-278867",
+        "carol-of-the-bells-xmas-background-orchestral-hip-hop-music-55-second-278871",
+        "chasing-horizons-228832",
+        "chill-lofi-music-interior-lounge-256260",
+        "christmas-251281",
+        "christmas-cheer-262617",
+        "christmas-day-christmas-music-268334",
+        "christmas-miracle-249611",
+        "christmas-music-golden-chimes-of-noel-272615",
+        "christmas-short-v1-254790",
+        "christmas-upbeat-happy-new-year-background-272585",
+        "christmas-vibe-xmas-music-merry-christmas-background-269020",
+        "coniferous-forest-142569",
+        "corporate-life-upbeat-commercial-music-250619",
+        "coverless-book-lofi-186307",
+        "cozy-christmas-eve-251739",
+        "creative-technology-showreel-241274",
+        "dancing-love-bridget-background-music-for-video-synth-pop-version-288843",
+        "dancing-love-bridget-disco-pop-background-music-for-video-34-second-288838",
+        "dancing-love-bridget-synth-pop-background-music-for-video-39-second-288839",
+        "dancing-love-bridget-synthwave-background-music-for-video-40-second-288840",
+        "deep-future-garage-royalty-free-music-163081",
+        "deep-meditation-192828",
+        "delicate-reverie-background-piano-music-269613",
+        "detective-epic-chamber-strings-279891",
+        "drive-breakbeat-173062",
+        "easy-lifestyle-137766",
+        "eco-technology-145636",
+        "elegance-piano-music-295015",
+        "elysian-embers-240355",
+        "emotional-piano-music-dramatic-296400",
+        "enchanted-chimes-177906",
+        "endless-by-prabajithk-118998",
+        "epic-adventure-cinematic-music-trailer-228400",
+        "epic-background-orchestral-music-rise-of-legends-252183",
+        "epic-cinematic-music-293619",
+        "ethereal-discovery-background-piano-music-288355",
+        "ethereal-vistas-191254",
+        "evening-glow-soft-piano-music-243818",
+        "family-trip-pop-summer-upbeat-song-230607",
+        "flow-211881",
+        "for-future-bass-159125",
+        "for-her-chill-upbeat-summel-travel-vlog-and-ig-music-royalty-free-use-202298",
+        "frosted-dawn-244252",
+        "fun-life-upbeat-commercial-hiphop-112188",
+        "funk-in-kingdom-200507",
+        "funk-rhythms-297421",
+        "funky-jam-295299",
+        "funny-comedy-cartoon-background-music-294730",
+        "funny-comedy-quirky-cartoon-background-music-296558",
+        "futuristic-beat-146661",
+        "good-night-lofi-cozy-chill-music-160166",
+        "groove-funk-296391",
+        "groovy-ambient-funk-201745",
+        "guitar-melody-1-cover-294258",
+        "happy-acoustic-guitar-background-music-122614",
+        "happy-birthday-254480",
+        "happy-christmas-time-275471",
+        "happy-day-113985",
+        "happy-day-148320",
+        "happy-rock-165132",
+        "happy-summer-daisy-background-tropical-house-music-for-video-25-sec-284519",
+        "haunted-carnival-243697",
+        "holidays-in-miami-background-tropical-house-music-for-video-40-second-264697",
+        "holidays-with-you-background-tropical-house-music-for-video-1-minute-281256",
+        "holidays-with-you-background-tropical-house-music-for-video-38-sec-281255",
+        "holidays-with-you-background-tropical-house-music-for-video-vlog-281258",
+        "horror-258261",
+        "horror-background-atmosphere-13-246915",
+        "in-slow-motion-inspiring-ambient-lounge-219592",
+        "in-the-beginning-296129",
+        "information-corporate-advertising-music-252179",
+        "inside-you-162760",
+        "inspirational-uplifting-calm-piano-254764",
+        "inspired-ambient-141686",
+        "inspiring-piano-music-293598",
+        "introduction-piano-music-297440",
+        "its-christmas-261279",
+        "ix27ll-be-home-for-christmas-classical-piano-248549",
+        "jingle-bells-278637",
+        "jingle-bells-christmas-hip-hop-128137",
+        "jingle-bells-christmas-holidays-celebration-background-intro-theme-265841",
+        "joyride-jamboree-206911",
+        "lazy-day-stylish-futuristic-chill-239287",
+        "legacy-of-brahms-lullaby-background-orchestral-music-for-video-full-274550",
+        "legacy-of-rossini-the-barber-of-seville-background-music-1-minute-283256",
+        "legacy-of-rossini-the-barber-of-seville-background-music-30-second-283253",
+        "legacy-of-rossini-the-barber-of-seville-background-music-43-second-283255",
+        "legacy-of-rossini-the-barber-of-seville-background-music-for-video-283257",
+        "leonell-cassio-the-paranormal-is-real-ft-carrie-163742",
+        "leva-eternity-149473",
+        "lofi-chill-jazz-272869",
+        "lofi-chill-smooth-chill-lofi-for-vlogs-and-background-music-159456",
+        "lofi-hiphop-chill-background-lofi-296305",
+        "lofi-relaxing-chill-music-295834",
+        "lofi-rnb-music-296542",
+        "lofi-song-backyard-by-lofium-242713",
+        "lost-in-dreams-abstract-chill-downtempo-cinematic-future-beats-270241",
+        "lotus-sky-dreams-216049",
+        "magic-xmas-jingle-270799",
+        "majestic-voyage-200663",
+        "meditation-relaxing-music-293922",
+        "mellow-future-bass-bounce-on-it-184234",
+        "merry-christmas-261280",
+        "merry-xmas-270801",
+        "midnight-forest-184304",
+        "modern-vlog-140795",
+        "motivation-sport-295032",
+        "motivational-background-corporate-city-273359",
+        "motivational-day-112790",
+        "motivational-epic-music-inspiring-cinematic-background-music-124265",
+        "movement-200697",
+        "my-first-love-275416",
+        "my-universe-147152",
+        "new-year-bells-277956",
+        "night-detective-226857",
+        "nightfall-future-bass-music-228100",
+        "no-copyright-music-emotional-piano-296804",
+        "no-place-to-go-216744",
+        "once-in-paris-168895",
+        "peaceful-relaxing-piano-music-271857",
+        "perfect-beauty-191271",
+        "petal-skies-245374",
+        "phonk-292971",
+        "phonk-brazilian-phonk-music-253422",
+        "pink-lights-296496",
+        "planeta-sol-297069",
+        "power-is-you-248869",
+        "power-play-168168",
+        "powerful-energy-upbeat-rock-advertising-music-245728",
+        "prism-of-darkness-funny-hip-hop-background-music-for-video-30-second-291295",
+        "prism-of-darkness-funny-hip-hop-background-music-for-video-39-second-291296",
+        "prism-of-darkness-funny-hip-hop-background-music-for-video-46-second-291297",
+        "prism-of-darkness-funny-hip-hop-background-music-for-video-54-second-291298",
+        "prism-of-darkness-funny-hip-hop-background-music-for-video-full-ver-291300",
+        "radiant-surge-237026",
+        "reflected-light-147979",
+        "relaxing-145038",
+        "relaxing-birds-and-piano-music-137153",
+        "relaxing-piano-music-259727",
+        "rise-above-178316 (1)",
+        "rise-above-178316",
+        "risk-136788",
+        "sad-dramatic-piano-sad-alone-drama-262415",
+        "sad-soul-chasing-a-feeling-185750",
+        "science-documentary-169621",
+        "seductive-chill-hip-hop-instrumental-hear-me-134134",
+        "sexy-chillout-hip-hop-track-come-with-me-133764",
+        "showreel-music-promo-advertising-opener-vlog-background-intro-theme-261601",
+        "smoke-143172",
+        "snow-traprap-type-beat-quotguitarquot-278877",
+        "soft-background-piano-285589",
+        "soft-piano-christmas-song-for-a-peaceful-holiday-250840",
+        "solitude-dark-ambient-electronic-197737",
+        "song-english-edm-296526",
+        "soulsweeper-252499",
+        "spinning-head-271171",
+        "stylish-deep-electronic-262632",
+        "stylish-upbeat-commercial-advertising-funk-267753",
+        "subway-mirage-261477",
+        "summer-memories-270159",
+        "summer-vibes-florida-background-tropical-house-music-for-video-37-sec-296441",
+        "summer-vibes-florida-background-tropical-house-music-for-video-46-sec-296443",
+        "summer-vibes-florida-background-tropical-house-music-for-video-60-sec-296444",
+        "summer-vibes-florida-background-tropical-house-music-for-video-vlog-296445",
+        "summer-walk-152722",
+        "sunlit-rhythms-205542",
+        "sunlit-whistle-200168",
+        "sunrise-groove-176565",
+        "sunrise-serenade-203778",
+        "tearstream-alley-262939",
+        "tell-me-the-truth-260010",
+        "the-best-jazz-club-in-new-orleans-164472",
+        "tibet-263439",
+        "time-jump-background-music-for-video-vlog-house-version-1-minute-287441",
+        "time-jump-background-music-for-video-vlog-house-version-36-second-287437",
+        "time-jump-background-music-for-video-vlog-house-version-39-second-287438",
+        "time-jump-background-music-for-video-vlog-house-version-55-second-287440",
+        "titanium-170190",
+        "trap-future-bass-royalty-free-music-167020",
+        "travel-upbeat-happy-fun-background-music-for-videos-244587",
+        "tvari-tokyo-cafe-159065",
+        "unlimited-motivation-158250",
+        "unlock-me-amapiano-music-149058",
+        "upbeat-background-music-278928",
+        "upbeat-funk-commercial-advertising-music-253434",
+        "upbeat-motivation-music-292747",
+        "upbeat-motivational-music-289762",
+        "vlog-music-beat-trailer-showreel-promo-background-intro-theme-274290",
+        "waterfall-140894",
+        "we-wish-you-a-merry-christmas-126685",
+        "we-wish-you-a-merry-christmas-happy-remix-background-intro-theme-265842",
+        "we-wish-you-a-merry-christmas-happy-remix-background-intro-theme-277943",
+        "whispering-vinyl-loops-lofi-beats-281193",
+        "your-black-hoodie-background-hip-hop-music-for-video-full-version-296262",
+        "your-black-hoodie-background-hip-hop-music-for-video-vlog-1-minute-296261",
+        "your-black-hoodie-background-hip-hop-music-for-video-vlog-49-second-296258",
+        "your-black-hoodie-background-hip-hop-music-for-video-vlog-57-second-296260",
+        "your-black-hoodie-background-hip-hop-music-for-video-vlog-60-second-296259",
+        "your-muse-background-orchestral-hip-hop-music-for-video-60-second-294824",
+        "your-muse-background-orchestral-hip-hop-music-for-video-full-version-294826"
+    ];
+
+    // 음악 리스트를 동적으로 생성
+    const musicListDiv = document.getElementById('music-list');
+
+    files.forEach(music => {
+      const musicItemDiv = document.createElement('div');
+      musicItemDiv.classList.add('music-item');
+      
+      const musicName = document.createElement('span');
+      musicName.textContent = music;
+      
+      const playButton = document.createElement('button');
+      playButton.textContent = '재생';
+      
+      // 재생 버튼 클릭 시 음원을 스트리밍하는 로직
+      playButton.onclick = () => {
+        const url = `https://a1f7-116-121-168-190.ngrok-free.app/stream/${music}`;
+        
+        fetch(url, {
+          method: 'GET',
+          headers: {
+            'ngrok-skip-browser-warning': '1'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            const audio = new Audio(url);
+            audio.play();
+          } else {
+            alert('음악을 불러오는 데 실패했습니다.');
+          }
+        })
+        .catch(error => {
+          console.error('음악 스트리밍 오류:', error);
+          alert('서버 오류가 발생했습니다.');
+        });
+      };
+      
+      musicItemDiv.appendChild(musicName);
+      musicItemDiv.appendChild(playButton);
+      musicListDiv.appendChild(musicItemDiv);
+    });
+  </script>
 </body>
 </html>
