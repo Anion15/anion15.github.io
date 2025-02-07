@@ -283,10 +283,11 @@
             currentButton.textContent = '재생';
           }
         }
-
+        
         // 새로운 오디오 생성
         const url = `https://cd18-116-121-168-190.ngrok-free.app/stream/${music}`;
-        
+        console.log(musicname);
+        console.log(music);
         fetch(url, {
           method: 'GET',
           headers: {
