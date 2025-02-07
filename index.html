@@ -281,7 +281,9 @@
         })
         .then(response => {
           if (response.ok) {
-            const audio = new Audio(url);
+            const audio = new Audio();
+            audio.src = url;
+            audio.type = 'audio/mpeg'; // MPEG 스트리밍 형식
             audio.play();
           } else {
             alert('음악을 불러오는 데 실패했습니다.');
