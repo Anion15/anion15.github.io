@@ -286,7 +286,6 @@
         
         // 새로운 오디오 생성
         const url = `https://cd18-116-121-168-190.ngrok-free.app/stream/${music}`;
-        console.log(musicname);
         console.log(music);
         fetch(url, {
           method: 'GET',
@@ -325,7 +324,6 @@
         currentAudio.pause(); // 음악을 멈추고
         currentAudio.src = ""; // 스트리밍을 종료
         music = "";
-        musicname = "";
         if (currentButton) {
           currentButton.textContent = '재생';
         }
