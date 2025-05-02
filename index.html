@@ -30,21 +30,44 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 60px;
+      font-size: 30px;
       z-index: 9999;
+      flex-direction: column;
+    }
+    .loading img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
   <div class="loading">
-    <img src="https://raw.githubusercontent.com/Anion15/anion15.github.io/refs/heads/main/loading.gif" loop="infinite" />
+    <img src="https://raw.githubusercontent.com/Anion15/anion15.github.io/refs/heads/main/loading.gif" alt="loading" />
+    <div id="loading-text">페이지를 불러오는 중입니다...</div>
   </div>
   <script>
+    const targetUrl = 'https://skiing-programs-causing-reunion.trycloudflare.com/';
+
+    const loadingText = document.getElementById('loading-text');
+
     window.onload = function() {
-      setTimeout(function() {
-        document.querySelector('.loading').style.display = 'none';
-        window.location.href = 'https://skiing-programs-causing-reunion.trycloudflare.com/';
-      }, 1000);
+      fetch(targetUrl, { method: 'HEAD', mode: 'no-cors' })
+        .then(response => {
+          return fetch(targetUrl, { method: 'GET', mode: 'cors' });
+        })
+        .then(response => {
+          if (response.status === 200) {
+            setTimeout(() => {
+              window.location.href = targetUrl;
+            }, 1000);
+          } else {
+            loadingText.innerText = '상정인사이드가 현재 업데이트 중입니다.\n약 10분에서 30분 정도 소요됩니다.';
+          }
+        })
+        .catch(error => {
+          loadingText.innerText = '상정인사이드가 현재 업데이트 중입니다.\n약 10분에서 30분 정도 소요됩니다.';
+        });
     };
   </script>
 </body>
