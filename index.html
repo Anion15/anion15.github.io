@@ -49,25 +49,10 @@
   <script>
     const targetUrl = 'https://conservative-tier-cathedral-drew.trycloudflare.com/';
 
-    const loadingText = document.getElementById('loading-text');
-
     window.onload = function() {
-      fetch(targetUrl, { method: 'HEAD', mode: 'no-cors' })
-        .then(response => {
-          return fetch(targetUrl, { method: 'GET', mode: 'cors' });
-        })
-        .then(response => {
-          if (response.status === 200) {
-            setTimeout(() => {
-              window.location.href = targetUrl;
-            }, 500);
-          } else {
-            loadingText.innerText = '상정인사이드가 현재 업데이트 중입니다.\n약 10분에서 30분 정도 소요됩니다.';
-          }
-        })
-        .catch(error => {
-          loadingText.innerText = '상정인사이드가 현재 업데이트 중입니다.\n약 10분에서 30분 정도 소요됩니다.';
-        });
+      setTimeout(() => {
+        window.location.href = targetUrl;
+      }, 500);
     };
   </script>
 </body>
