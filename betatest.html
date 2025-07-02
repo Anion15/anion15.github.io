@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>상정인사이드 - 공식 소개</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 배경 그라디언트 애니메이션 */
+    .gradient-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(255, 20, 147, 0.1) 0%, transparent 50%),
+        linear-gradient(135deg, #000 0%, #0a0a0a 50%, #000 100%);
+      animation: gradientShift 20s ease-in-out infinite;
+      z-index: -2;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.1) rotate(5deg); }
+    }
+
+    /* 떠다니는 파티클 */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(0, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) translateX(100px);
+        opacity: 0;
+      }
+    }
+
+    /* 섹션 기본 스타일 */
+    .section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      backdrop-filter: blur(20px);
+    }
+
+    .content {
+      text-align: center;
+      max-width: 1200px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 히어로 섹션 */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 8rem);
+      font-weight: 100;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #fff 0%, #00ffff 50%, #ff1493 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: titleGlow 3s ease-in-out infinite alternate;
+      line-height: 1.1;
+    }
+
+    @keyframes titleGlow {
+      0% { filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.3)); }
+      100% { filter: drop-shadow(0 0 40px rgba(0, 255, 255, 0.6)); }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 4rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* 글래스모피즘 카드 */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 4rem;
+      margin: 2rem 0;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.8s;
+    }
+
+    .glass-card:hover::before {
+      left: 100%;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(0, 255, 255, 0.2);
+      border-color: rgba(0, 255, 255, 0.3);
+    }
+
+    .feature-title {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 200;
+      margin-bottom: 1.5rem;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .feature-description {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, #00ffff, #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 400;
+      position: relative;
+    }
+
+    /* CTA 버튼 */
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem 3rem;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #000;
+      background: linear-gradient(135deg, #00ffff, #ffffff);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s;
+    }
+
+    .cta-button:hover::before {
+      left: 100%;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 20px 50px rgba(0, 255, 255, 0.5);
+      background: linear-gradient(135deg, #ffffff, #00ffff);
+    }
+
+    /* 숫자 카운터 효과 */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+
+    .stat-item:hover {
+      background: rgba(0, 255, 255, 0.1);
+      transform: translateY(-5px);
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #00ffff;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 300;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 768px) {
+      .glass-card {
+        padding: 2rem;
+        margin: 1rem;
+      }
+      
+      .section {
+        padding: 1rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    /* 스크롤 인디케이터 */
+    .scroll-indicator {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-indicator::after {
+      content: '↓';
+      font-size: 2rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    /* 커스텀 스크롤바 */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #00ffff, #ff1493);
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-bg"></div>
+  
+  <div class="particles" id="particles"></div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="content">
+      <h1 class="hero-title">상정인사이드</h1>
+      <p class="hero-subtitle">로그인 없이 바로 즐기는 프리미엄 커뮤니티</p>
+      <div class="scroll-indicator"></div>
+    </div>
+  </section>
+
+  <!-- 실시간 반영 섹션 -->
+  <section class="section">
+    <div class="content">
+      <div class="glass-card">
+        <h2 class="feature-title">게시물과 댓글이 <span class="highlight">실시간 자동 반영</span></h2>
+        <p class="feature-description">새로고침이 필요 없는 혁신적인 실시간 업데이트 시스템</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 디자인 섹션 -->
+  <section class="section">
+    <div class="content">
+      <div class="glass-card">
+        <h2 class="feature-title">디자인은 <span class="highlight">깔끔</span>하고</h2>
+        <p class="feature-description">눈이 <span class="highlight">편안한</span> 레이아웃으로 최적화된 사용자 경험</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 통계 섹션 -->
+  <section class="section">
+    <div class="content">
+      <div class="glass-card">
+        <h2 class="feature-title">검증된 <span class="highlight">안정성과 신뢰성</span></h2>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-number" data-count="10000">0</span>
+            <span class="stat-label">줄의 코드</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-count="68">0</span>
+            <span class="stat-label">일간 안정 운영</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-count="100">0</span>
+            <span class="stat-label">% 업타임</span>
+          </div>
+        </div>
+        <p class="feature-description"><span class="highlight">4월 25일부터</span> 이어진 검증된 안정성</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA 섹션 -->
+  <section class="section">
+    <div class="content">
+      <div class="glass-card">
+        <h2 class="feature-title">수많은 게시물과 댓글</h2>
+        <p class="feature-description"><span class="highlight">지금 바로</span> 참여해보세요</p>
+        <a href="https://anion15.github.io" class="cta-button">
+          <span>입장하기</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <script>
+    // GSAP 설정
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 파티클 생성
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // 숫자 카운터 애니메이션
+    function animateCounters() {
+      const counters = document.querySelectorAll('[data-count]');
+      
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-count'));
+        const duration = 2;
+        
+        gsap.to({value: 0}, {
+          value: target,
+          duration: duration,
+          ease: "power2.out",
+          onUpdate: function() {
+            counter.textContent = Math.floor(this.targets()[0].value).toLocaleString();
+          },
+          scrollTrigger: {
+            trigger: counter,
+            start: "top 80%",
+            once: true
+          }
+        });
+      });
+    }
+
+    // 글래스 카드 애니메이션
+    gsap.utils.toArray('.glass-card').forEach((card, i) => {
+      gsap.from(card, {
+        y: 100,
+        opacity: 0,
+        scale: 0.8,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 85%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse"
+        }
+      });
+    });
+
+    // 히어로 섹션 애니메이션
+    gsap.timeline()
+      .from('.hero-title', {
+        y: 100,
+        opacity: 0,
+        scale: 0.8,
+        duration: 1.5,
+        ease: "power3.out"
+      })
+      .from('.hero-subtitle', {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power2.out"
+      }, "-=0.8");
+
+    // 스크롤 인디케이터 숨기기
+    ScrollTrigger.create({
+      trigger: ".section",
+      start: "top 90%",
+      onEnter: () => {
+        gsap.to('.scroll-indicator', {
+          opacity: 0,
+          duration: 0.5
+        });
+      },
+      onLeaveBack: () => {
+        gsap.to('.scroll-indicator', {
+          opacity: 1,
+          duration: 0.5
+        });
+      }
+    });
+
+    // 마우스 추적 효과
+    document.addEventListener('mousemove', (e) => {
+      const cursor = document.querySelector('.gradient-bg');
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      
+      gsap.to(cursor, {
+        background: `
+          radial-gradient(circle at ${x}% ${y}%, rgba(0, 255, 255, 0.2) 0%, transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+          radial-gradient(circle at 40% 60%, rgba(255, 20, 147, 0.1) 0%, transparent 50%),
+          linear-gradient(135deg, #000 0%, #0a0a0a 50%, #000 100%)
+        `,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    });
+
+    // 초기화
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      animateCounters();
+    });
+
+    // 성능 최적화를 위한 디바운스된 리사이즈 핸들러
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 250);
+    });
+  </script>
+</body>
+</html>
