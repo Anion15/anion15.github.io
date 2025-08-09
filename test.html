@@ -52,7 +52,7 @@
       <div id="userFields" class="hidden space-y-4">
         <label class="block text-gray-700 font-medium">
           신고할 작성자의 ID:
-          <input type="text" name="reported_user_id" required
+          <input type="text" name="reported_user_id"
             class="mt-1 block w-full h-12 text-lg font-semibold rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" />
         </label>
 
@@ -114,18 +114,32 @@
         userFields.classList.add('hidden');
         reportTypeInput.value = 'bug';
 
-        userFields.querySelector('input[name="reported_user_id"]').required = false;
-        userFields.querySelector('input[name="reported_screenshot"]').required = false;
-        bugFields.querySelector('textarea[name="description"]').required = true;
+        // userFields 안 필드 required 해제
+        const reportedUserId = userFields.querySelector('input[name="reported_user_id"]');
+        if (reportedUserId) reportedUserId.required = false;
+
+        const reportedScreenshot = userFields.querySelector('input[name="reported_screenshot"]');
+        if (reportedScreenshot) reportedScreenshot.required = false;
+
+        // bugFields 안 description 필수로
+        const description = bugFields.querySelector('textarea[name="description"]');
+        if (description) description.required = true;
       } else {
         formTitle.textContent = '사용자 신고';
         bugFields.classList.add('hidden');
         userFields.classList.remove('hidden');
         reportTypeInput.value = 'user';
 
-        userFields.querySelector('input[name="reported_user_id"]').required = true;
-        userFields.querySelector('input[name="reported_screenshot"]').required = false;
-        bugFields.querySelector('textarea[name="description"]').required = false;
+        // userFields 안 필드 required 설정
+        const reportedUserId = userFields.querySelector('input[name="reported_user_id"]');
+        if (reportedUserId) reportedUserId.required = true;
+
+        const reportedScreenshot = userFields.querySelector('input[name="reported_screenshot"]');
+        if (reportedScreenshot) reportedScreenshot.required = false;
+
+        // bugFields 안 description 필수 해제
+        const description = bugFields.querySelector('textarea[name="description"]');
+        if (description) description.required = false;
       }
     }
 
@@ -134,6 +148,8 @@
       document.querySelectorAll('input[name="reportType"]').forEach(radio => {
         radio.addEventListener('change', updateFormByType);
       });
+
+      updateFormByType(); // 초기 상태에 맞춰 required 속성 조정
     });
   </script>
 
