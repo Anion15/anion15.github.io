@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+</head>
+<body>
+    <a id="bugReportLink" href="#" class="list-group-item list-group-item-action">🚨 버그 발견</a>
+
+    <script>
+    async function setBugReportMailto() {
+    // 1. User-Agent
+    const userAgent = navigator.userAgent;
+
+    // 2. IP 가져오기 (공개 API 이용)
+    let userIP = '알수없음';
+    try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        userIP = data.ip;
+    } catch(e) {
+        console.warn('IP 조회 실패', e);
+    }
+
+    // 3. 메일 제목, 본문 작성 (인코딩 필수)
+    const subject = `버그발견 ip: ${userIP}`;
+
+    const body = `'해당 양식을 수정하거나 변경하여 제출할 시 해당 신고 및 요청건에 대하여 불이익 및 접수 처리가 늦거나 취소될 수 있습니다.'
+    USER_AGENT = ${userAgent}
+    발견하신 버그 설명 (최대한 자세히 서술해주세요.):
+    추가 설명: 
+    {버그 발견 과정 및 문제의 화면}
+
+    작성자분 디스코드 사용자명: 
+
+    {개인정보 처리 기간: 버그가 직접적으로 완전히 패치되거나 3개월 지난 경우 보내주신 모든 개인정보(USER_AGENT, IP)는 무조건 삭제합니다. (개인정보처리방침)[https://grounds-remark-atomic-dealtime.trycloudflare.com/term] 및 (서비스 이용 약관)[https://grounds-remark-atomic-dealtime.trycloudflare.com/service-terms]에 더 자세한 정보를 안내합니다.}
+
+    "보내주신 버그발견 제보는 더욱 쾌적한 상정인사이드 작동에 도움됩니다.
+    버그 패치 및 추가 질문에 대하여 개인 디스코드로 연락이 취해질 수 있습니다.
+
+    상정인사이드 운영자는 버그 패치 완료에 직접적인 도움이 되신 분에게 상정인사이드 릴리즈 노트에 작성자분 디스코드 사용자명을 기재하고 있습니다."
+    `;
+
+    const mailto = `mailto:vieepanouie.help@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // 4. a 태그 href 설정
+    document.getElementById('bugReportLink').href = mailto;
+    }
+
+    // 페이지 로드 후 실행
+    setBugReportMailto();
+    </script>
+
+
+</body>
+</html>
