@@ -1,57 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>신고 폼</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <a id="bugReportLink" href="#" class="list-group-item list-group-item-action">🚨 버그 발견</a>
+<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+  <main class="bg-white max-w-lg w-full rounded-lg shadow-md p-8">
+    <h1 id="formTitle" class="text-2xl font-bold mb-6 text-gray-800">버그 발견 신고</h1>
 
-    <script>
-    async function setBugReportMailto() {
-    // 1. User-Agent
-    const userAgent = navigator.userAgent;
+    <div class="flex gap-6 mb-6">
+      <label class="inline-flex items-center space-x-2 cursor-pointer">
+        <input type="radio" name="reportType" value="bug" checked class="form-radio text-blue-600" />
+        <span class="text-gray-700 select-none">버그 신고</span>
+      </label>
+      <label class="inline-flex items-center space-x-2 cursor-pointer">
+        <input type="radio" name="reportType" value="user" class="form-radio text-blue-600" />
+        <span class="text-gray-700 select-none">사용자 신고</span>
+      </label>
+    </div>
 
-    // 2. IP 가져오기 (공개 API 이용)
-    let userIP = '알수없음';
-    try {
+    <form id="bugForm" action="https://formsubmit.co/vieepanouie.help@gmail.com" method="POST" enctype="multipart/form-data" class="space-y-6">
+
+      <div id="bugFields">
+        <label class="block text-gray-700 font-medium">
+          발견하신 버그 설명 (최대한 자세히 서술해주세요):
+          <textarea name="description" rows="5" required
+            class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 resize-none"></textarea>
+        </label>
+
+        <label class="block text-gray-700 font-medium">
+          추가 설명:
+          <textarea name="additional_info" rows="3"
+            class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 resize-none"></textarea>
+        </label>
+
+        <label class="block text-gray-700 font-medium mt-6">
+          작성자분 디스코드 사용자명:
+          <input type="text" name="discord_name"
+            class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 h-12" />
+        </label>
+
+        <label class="block text-gray-700 font-medium mt-6">
+          스크린샷 파일 첨부 (선택):
+          <input type="file" name="screenshot" accept="image/*"
+            class="mt-1 block w-full text-gray-600" />
+        </label>
+      </div>
+
+      <div id="userFields" class="hidden space-y-4">
+        <label class="block text-gray-700 font-medium">
+          신고할 작성자의 ID:
+          <input type="text" name="reported_user_id" required
+            class="mt-1 block w-full h-12 text-lg font-semibold rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" />
+        </label>
+
+        <label class="block text-gray-700 font-medium">
+          신고하는 게시물 또는 댓글에 대한 스크린샷:
+          <input type="file" name="reported_screenshot" accept="image/*"
+            class="mt-1 block w-full text-gray-600" />
+        </label>
+
+        <p class="text-sm text-gray-500 italic">
+          신고자에 대하여 신변을 보호하기 위해 보내주신 모든 정보는 익명의 신고자로 처리합니다.<br />
+          같은 내용으로 반복하여 신고할 시 처리가 늦어지거나 상황에 따라서 취소될 수 있습니다.
+        </p>
+      </div>
+
+      <input type="hidden" name="user_ip" id="user_ip" />
+      <input type="hidden" name="user_agent" id="user_agent" />
+      <input type="hidden" name="report_type" id="report_type" value="bug" />
+
+      <button type="submit"
+        class="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors duration-200">
+        제출하기
+      </button>
+
+    </form>
+
+    <p class="mt-6 text-sm text-gray-500">
+      개인정보 처리 기간: 신고 내용이 완전히 처리되거나 3개월 지난 경우, 제출된 개인정보는 무조건 삭제됩니다.<br />
+      (개인정보처리방침 및 서비스 이용 약관 링크를 참고하세요.)
+    </p>
+  </main>
+
+  <script>
+    async function setUserInfo() {
+      const ua = navigator.userAgent;
+      document.getElementById('user_agent').value = ua;
+
+      let ip = '알수없음';
+      try {
         const res = await fetch('https://api.ipify.org?format=json');
         const data = await res.json();
-        userIP = data.ip;
-    } catch(e) {
-        console.warn('IP 조회 실패', e);
+        ip = data.ip;
+      } catch (e) {
+        console.warn('IP 조회 실패:', e);
+      }
+      document.getElementById('user_ip').value = ip;
     }
 
-    // 3. 메일 제목, 본문 작성 (인코딩 필수)
-    const subject = `버그발견 ip: ${userIP}`;
+    function updateFormByType() {
+      const type = document.querySelector('input[name="reportType"]:checked').value;
+      const formTitle = document.getElementById('formTitle');
+      const bugFields = document.getElementById('bugFields');
+      const userFields = document.getElementById('userFields');
+      const reportTypeInput = document.getElementById('report_type');
 
-    const body = `'해당 양식을 수정하거나 변경하여 제출할 시 해당 신고 및 요청건에 대하여 불이익 및 접수 처리가 늦거나 취소될 수 있습니다.'
-    USER_AGENT = ${userAgent}
-    발견하신 버그 설명 (최대한 자세히 서술해주세요.):
-    추가 설명: 
-    {버그 발견 과정 및 문제의 화면}
+      if (type === 'bug') {
+        formTitle.textContent = '버그 발견 신고';
+        bugFields.classList.remove('hidden');
+        userFields.classList.add('hidden');
+        reportTypeInput.value = 'bug';
 
-    작성자분 디스코드 사용자명: 
+        userFields.querySelector('input[name="reported_user_id"]').required = false;
+        userFields.querySelector('input[name="reported_screenshot"]').required = false;
+        bugFields.querySelector('textarea[name="description"]').required = true;
+      } else {
+        formTitle.textContent = '사용자 신고';
+        bugFields.classList.add('hidden');
+        userFields.classList.remove('hidden');
+        reportTypeInput.value = 'user';
 
-    {개인정보 처리 기간: 버그가 직접적으로 완전히 패치되거나 3개월 지난 경우 보내주신 모든 개인정보(USER_AGENT, IP)는 무조건 삭제합니다. (개인정보처리방침)[https://grounds-remark-atomic-dealtime.trycloudflare.com/term] 및 (서비스 이용 약관)[https://grounds-remark-atomic-dealtime.trycloudflare.com/service-terms]에 더 자세한 정보를 안내합니다.}
-
-    "보내주신 버그발견 제보는 더욱 쾌적한 상정인사이드 작동에 도움됩니다.
-    버그 패치 및 추가 질문에 대하여 개인 디스코드로 연락이 취해질 수 있습니다.
-
-    상정인사이드 운영자는 버그 패치 완료에 직접적인 도움이 되신 분에게 상정인사이드 릴리즈 노트에 작성자분 디스코드 사용자명을 기재하고 있습니다."
-    `;
-
-    const mailto = `mailto:vieepanouie.help@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    // 4. a 태그 href 설정
-    document.getElementById('bugReportLink').href = mailto;
+        userFields.querySelector('input[name="reported_user_id"]').required = true;
+        userFields.querySelector('input[name="reported_screenshot"]').required = false;
+        bugFields.querySelector('textarea[name="description"]').required = false;
+      }
     }
 
-    // 페이지 로드 후 실행
-    setBugReportMailto();
-    </script>
-
+    window.addEventListener('DOMContentLoaded', () => {
+      setUserInfo();
+      document.querySelectorAll('input[name="reportType"]').forEach(radio => {
+        radio.addEventListener('change', updateFormByType);
+      });
+    });
+  </script>
 
 </body>
 </html>
