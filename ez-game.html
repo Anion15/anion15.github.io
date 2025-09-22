@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DinoDance Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .game-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          margin: 0;
+          padding: 0;
+          background: linear-gradient(45deg, #23272a 90%, #111 100%), linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+          background-blend-mode: multiply;
+          background-size: 400% 400%;
+          animation: gradientShift 8s ease infinite;
+          overflow: hidden;
+          z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .game-ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+
+        .score {
+            margin-bottom: 10px;
+        }
+
+        .combo {
+            font-size: 18px;
+            color: #ffed4e;
+            margin-bottom: 10px;
+        }
+
+        .timer {
+            font-size: 22px;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .timer.warning {
+            animation: timerWarning 0.5s ease-in-out infinite;
+        }
+
+        @keyframes timerWarning {
+            0%, 100% { 
+                color: #ff6b6b; 
+                transform: scale(1);
+            }
+            50% { 
+                color: #ff3333; 
+                transform: scale(1.1);
+            }
+        }
+
+        .doti-baby {
+            position: absolute;
+            width: min(max(40px, 5vw), 80px);  /* 최소 40px, 최대 80px, 기본적으로 뷰포트 너비의 5% */
+            height: min(max(40px, 5vw), 80px);
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border: 3px solid #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            animation: bounce 0.6s ease-in-out infinite alternate;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            overflow: hidden;
+        }
+
+        /* 병맛 리듬 효과용 클래스 */
+        .rythm-rotate { will-change: transform; }
+        .rythm-scale { will-change: transform; }
+        .rythm-border { will-change: border; }
+        .rythm-shadow { will-change: box-shadow; }
+        .rythm-colorful { will-change: background, color; }
+        .rythm-wiggle { will-change: transform; }
+        .rythm-skew { will-change: transform; }
+        .rythm-flip { will-change: transform; }
+        .rythm-glow { will-change: box-shadow; }
+        .rythm-jelly { will-change: transform; }
+
+        .doti-baby::before {
+            content: '';
+            display: block;
+            width: 48px;
+            height: 48px;
+            background: url('image.png') center/contain no-repeat;
+            animation: wiggle 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-5px) scale(1.05); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .doti-baby:hover {
+            transform: scale(1.2);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.4);
+        }
+
+        .doti-baby.collected {
+            animation: collectAnimation 0.5s ease-out forwards;
+        }
+
+        @keyframes collectAnimation {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffed4e;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 1s ease-out forwards;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 2000; /* 항상 최상위 */
+        }
+
+        .music-activation-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 3000; /* 음악 활성화가 항상 최상위 */
+        }
+
+        .music-activation-screen h1 {
+            font-size: 48px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: musicPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .music-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: musicBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes musicBounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .music-activate-button {
+            padding: 20px 40px;
+            font-size: 28px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px;
+            animation: buttonGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 10px 30px rgba(255,107,107,0.5);
+                transform: scale(1.05);
+            }
+        }
+
+        .music-activate-button:hover {
+            transform: scale(1.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        .game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 2500; /* 게임 오버가 시작화면보다 위 */
+        }
+
+        .final-score {
+            font-size: 36px;
+            margin: 20px 0;
+            color: #ffed4e;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .start-screen h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: titlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .start-button {
+            padding: 15px 30px;
+            font-size: 24px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .start-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .instructions {
+            margin: 20px 0;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .beat-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #ffed4e;
+            border-radius: 50%;
+            animation: beatPulse 0.5s ease-in-out;
+            display: none;
+        }
+
+        @keyframes beatPulse {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) scale(2); opacity: 0; }
+        }
+
+        .trail {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.6), transparent);
+            pointer-events: none;
+            animation: trailFade 0.8s ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% {
+                transform: scale(0.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes missRipple {
+            0% {
+                transform: scale(0.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        .volume-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            z-index: 100;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            border-radius: 2px;
+            outline: none;
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* 오디오 숨기기 */
+        audio {
+            display: none;
+        }
+
+        /* 리듬 효과를 위한 추가 스타일 */
+        .rhythm-bass { animation: none; }
+        .rhythm-kick { animation: none; }
+        .rhythm-medium { animation: none; }
+        .rhythm-treble { animation: none; }
+        .rhythm-color { animation: none; }
+        /* Extra heavy rhythm utility classes for intense effects */
+        .rhythm-shake { will-change: transform; }
+        .rhythm-blur { will-change: filter; }
+        .rhythm-glow { will-change: box-shadow, filter; }
+        .rhythm-warp { will-change: transform; }
+        .rhythm-fontdance { will-change: transform, letter-spacing; display: inline-block; }
+        .rhythm-buttonpop { will-change: transform, box-shadow; }
+        /* helper to apply backdrop blur to the whole page */
+        .global-blur {
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 오디오 엘리먼트 -->
+    <audio id="music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        <source src="music.ogg" type="audio/ogg">
+        <source src="music.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+    <!-- 점수 획득 효과음 (호잇짜) -->
+    <audio id="effect-hoitja" src="1111.mp3" preload="auto"></audio>
+
+    <div class="game-container rhythm-bass rythm-rotate rythm-colorful rhythm-shake rhythm-blur rhythm-glow global-blur" id="gameContainer">
+        <div class="volume-control rhythm-treble">
+            <span>🔊</span>
+            <input type="range" class="volume-slider rythm-scale rythm-shadow" id="volumeSlider" min="0" max="1" step="0.1" value="0.7" onchange="changeVolume(this.value)">
+        </div>
+
+        <div class="game-ui rhythm-medium rythm-shadow rythm-colorful">
+            <div class="score rhythm-kick rythm-jelly">점수: <span id="score" class="rythm-scale">0</span></div>
+            <div class="combo rhythm-treble rythm-wiggle">콤보: <span id="combo" class="rythm-scale">0</span></div>
+            <div class="timer rhythm-kick rythm-glow" id="timer">시간: <span class="rythm-flip">30</span></div>
+        </div>
+
+        <!-- 음악 활성화 화면 -->
+        <div class="music-activation-screen rhythm-bass rythm-skew rythm-colorful" id="musicActivationScreen">
+            <div class="music-icon">🎵</div>
+            <h1 class="rhythm-medium rythm-rotate rythm-glow">음악과 함께 플레이하세요!</h1>
+            <div class="instructions rhythm-treble">
+                <p>🎶 최고의 게임 경험을 위해 음악을 활성화해주세요</p>
+                <p>🎵 음악에 맞춰 화면이 리듬감 있게 움직입니다</p>
+                <p>🔊 볼륨을 조절하여 원하는 크기로 설정하세요</p>
+            </div>
+            <button class="music-activate-button rhythm-kick rythm-jelly rythm-shadow rhythm-buttonpop rhythm-fontdance rhythm-glow" onclick="activateMusic()">🎵 음악 활성화하기</button>
+        </div>
+
+        <div class="start-screen rhythm-bass rythm-colorful rythm-skew" id="startScreen" style="display: none;">
+            <h1 class="rhythm-medium rythm-rotate rythm-glow"><img src="image.png" alt="도티" style="height: 5em; vertical-align: middle;"> 아기 도티를 잡아라! <img src="image.png" alt="도티" style="height: 5em; vertical-align: middle;"></h1>
+            <div class="instructions rhythm-treble rythm-wiggle">
+                <p>🎵 음악에 맞춰 떨어지는 도티 아기들을 수집하세요!</p>
+                <p>🖱️ 마우스 클릭 또는 터치로 도티 아기를 터치하세요</p>
+                <p>⚡ 연속으로 수집하면 콤보 보너스!</p>
+                <p>⏰ 30초 안에 최고 점수에 도전하세요!</p>
+                <p>🎶 음악의 리듬에 맞춰 플레이하세요!</p>
+            </div>
+            <button class="start-button rhythm-kick rythm-jelly rythm-shadow rhythm-buttonpop rhythm-fontdance rhythm-glow" onclick="startGame()">게임 시작</button>
+        </div>
+
+        <div class="game-over rhythm-bass rythm-colorful rythm-skew" id="gameOverScreen">
+            <h1 class="rhythm-medium rythm-rotate rythm-glow">🎉 게임 종료! 🎉</h1>
+            <div class="final-score rhythm-kick rythm-jelly">최종 점수: <span id="finalScore" class="rythm-scale">0</span></div>
+            <div class="instructions rhythm-treble rythm-wiggle">
+                <p>축하합니다! 30초 동안 열심히 플레이했네요!</p>
+                <p>더 높은 점수에 도전해보세요!</p>
+            </div>
+            <button class="start-button rhythm-kick rythm-jelly rythm-shadow" onclick="restartGame()">다시 시작</button>
+        </div>
+    </div>
+
+    <!-- Rythm.js 라이브러리 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rythm.js/2.2.5/rythm.min.js"></script>
+
+    <script>
+        let rythm;
+        let musicElement;
+        let isPlaying = false;
+        let isMusicActivated = false;
+
+    class DinoDanceGame {
+            constructor() {
+                this.container = document.getElementById('gameContainer');
+                this.score = 0;
+                this.combo = 0;
+                this.gameRunning = false;
+                this.dotiObjects = [];
+                this.spawnRate = 0.85; // 초기 생성 확률 증가
+                this.timeLeft = 30;
+                this.gameTimer = null;
+                this.maxSpawnRate = 2.0; // 최대 생성 확률 증가
+                
+                this.setupEventListeners();
+                this.initializeRythm();
+            }
+
+            initializeRythm() {
+                musicElement = document.getElementById('music');
+                musicElement.volume = 0.7;
+                
+                // Rythm.js 초기화 (오디오 파일이 없어도 작동하도록)
+                try {
+                    rythm = new Rythm();
+                    
+                    // 베이스 - 배경과 큰 요소들
+                    rythm.addRythm('rhythm-bass', 'pulse', 0, 10, {
+                        min: 0.9,
+                        max: 1.2
+                    });
+                    
+                    // 킥드럼 - UI 요소들과 버튼들
+                    rythm.addRythm('rhythm-kick', 'jump', 150, 400, {
+                        min: 0,
+                        max: 25
+                    });
+                    
+                    // 미드레인지 - 제목과 중간 요소들
+                    rythm.addRythm('rhythm-medium', 'twist', 400, 2600, {
+                        min: -20,
+                        max: 20
+                    });
+                    
+                    // 고음역 - 작은 디테일 요소들
+                    rythm.addRythm('rhythm-treble', 'vanish', 2600, 16000, {
+                        min: 0,
+                        max: 1
+                    });
+
+                    // 전체 배경 색상 변화 효과
+                    rythm.addRythm('game-container', 'color', 0, 20, {
+                        from: [102, 126, 234],
+                        to: [255, 107, 107]
+                    });
+
+                    // 추가적인 리듬 효과들
+                    rythm.addRythm('rhythm-color', 'borderColor', 200, 800, {
+                        from: [255, 255, 255],
+                        to: [255, 237, 78]
+                    });
+
+                    // Rythm.js에 오디오 연결
+                    rythm.setMusic(musicElement);
+                    // extra intense global effects
+                    // shake the whole page
+                    rythm.addRythm('rhythm-shake', 'translateX', 0, 200, { min: -6, max: 6 });
+                    rythm.addRythm('rhythm-shake', 'translateY', 0, 200, { min: -6, max: 6 });
+                    // blur the backdrop slightly in time with music
+                    rythm.addRythm('rhythm-blur', 'blur', 0, 1200, { min: 0, max: 6 });
+                    // strong glow pulsing
+                    rythm.addRythm('rhythm-glow', 'boxShadow', 0, 800, { from: '0 0 0px rgba(255,255,255,0)', to: '0 0 36px rgba(255,255,200,0.9)' });
+                    // warp and skew
+                    rythm.addRythm('rhythm-warp', 'skewX', 0, 1000, { min: -6, max: 6 });
+                    rythm.addRythm('rhythm-warp', 'skewY', 0, 1000, { min: -6, max: 6 });
+                    // font dance for UI text
+                    rythm.addRythm('rhythm-fontdance', 'letterSpacing', 0, 900, { min: -2, max: 6 });
+                    rythm.addRythm('rhythm-fontdance', 'rotateZ', 0, 900, { min: -6, max: 6 });
+                    // button pop
+                    rythm.addRythm('rhythm-buttonpop', 'scale', 0, 600, { min: 0.9, max: 1.25 });
+                    // doti-specific jitter and spin
+                    rythm.addRythm('doti-baby', 'rotateZ', 0, 500, { min: -30, max: 30 });
+                    rythm.addRythm('doti-baby', 'translateY', 0, 300, { min: -8, max: 8 });
+                } catch (error) {
+                    console.log('Rythm.js 초기화 실패:', error);
+                    // 음악 없이도 게임이 작동하도록 처리
+                    rythm = null;
+                }
+            }
+
+            setupEventListeners() {
+                document.addEventListener('mousemove', (e) => {
+                    if (this.gameRunning) {
+                        this.handleMouseMove(e);
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (this.gameRunning) {
+                        this.handleClick(e);
+                    }
+                });
+
+                // 터치 이벤트 지원
+                document.addEventListener('touchmove', (e) => {
+                    if (this.gameRunning) {
+                        const touch = e.touches[0];
+                        this.handleMouseMove(touch);
+                    }
+                });
+
+                document.addEventListener('touchstart', (e) => {
+                    if (this.gameRunning) {
+                        e.preventDefault();
+                        const touch = e.touches[0];
+                        this.handleClick(touch);
+                    }
+                }, { passive: false });
+            }
+
+            start() {
+                this.gameRunning = true;
+                this.score = 0;
+                this.combo = 0;
+                this.timeLeft = 30;
+                this.updateUI();
+                
+                document.getElementById('startScreen').style.display = 'none';
+                document.getElementById('gameOverScreen').style.display = 'none';
+                
+                // 음악이 활성화되어 있다면 재생
+                if (isMusicActivated && !isPlaying) {
+                    this.startMusic();
+                }
+                
+                // 타이머 시작
+                this.gameTimer = setInterval(() => {
+                    this.timeLeft--;
+                    this.updateUI();
+                    
+                    // 마지막 10초에 경고 애니메이션
+                    const timerElement = document.getElementById('timer');
+                    if (this.timeLeft <= 10) {
+                        timerElement.classList.add('warning');
+                    } else {
+                        timerElement.classList.remove('warning');
+                    }
+                    
+                    // 시간 종료
+                    if (this.timeLeft <= 0) {
+                        this.endGame();
+                    }
+                }, 1000);
+                
+                // 점점 어려워지도록 스폰율 증가 (더 빠르게 증가)
+                this.difficultyTimer = setInterval(() => {
+                    if (this.gameRunning) {
+                        this.spawnRate = Math.min(this.spawnRate + 0.1, this.maxSpawnRate);
+                    }
+                }, 3000);
+
+                // 음악 리듬에 맞춰 도티 스폰
+                this.spawnTimer = setInterval(() => {
+                    if (this.gameRunning && Math.random() < this.spawnRate) {
+                        this.spawnDotiBaby();
+                    }
+                }, 500);
+            }
+
+            startMusic() {
+                musicElement.play().then(() => {
+                    rythm.start();
+                    isPlaying = true;
+                }).catch(error => {
+                    console.log('음악 재생 실패:', error);
+                });
+            }
+
+            endGame() {
+                this.gameRunning = false;
+                
+                // 타이머 정리
+                if (this.gameTimer) {
+                    clearInterval(this.gameTimer);
+                    this.gameTimer = null;
+                }
+                if (this.difficultyTimer) {
+                    clearInterval(this.difficultyTimer);
+                    this.difficultyTimer = null;
+                }
+                if (this.spawnTimer) {
+                    clearInterval(this.spawnTimer);
+                    this.spawnTimer = null;
+                }
+                
+                // 모든 도티 제거
+                this.dotiObjects.forEach(doti => {
+                    if (doti.element.parentNode) {
+                        doti.element.parentNode.removeChild(doti.element);
+                    }
+                });
+                this.dotiObjects = [];
+                
+                // 게임 오버 화면 표시
+                document.getElementById('finalScore').textContent = this.score;
+                document.getElementById('gameOverScreen').style.display = 'flex';
+            }
+
+            spawnDotiBaby() {
+                const doti = document.createElement('div');
+                doti.className = 'doti-baby rhythm-kick rhythm-color rythm-rotate rythm-scale rythm-shadow rythm-wiggle rythm-flip rhythm-shake rhythm-glow rhythm-warp';
+                
+                // 현재 화면 크기에 맞는 도티 크기 계산
+                const dotiSize = Math.min(Math.max(40, window.innerWidth * 0.05), 80);
+                
+                // 랜덤 위치에서 스폰 (도티 크기를 고려하여 위치 조정)
+                const x = Math.random() * (window.innerWidth - dotiSize);
+                const y = -dotiSize;
+                
+                doti.style.left = x + 'px';
+                doti.style.top = y + 'px';
+                
+                // 랜덤 색상
+                const colors = [
+                    'linear-gradient(45deg, #ff9a9e, #fecfef)',
+                    'linear-gradient(45deg, #a8edea, #fed6e3)',
+                    'linear-gradient(45deg, #ffecd2, #fcb69f)',
+                    'linear-gradient(45deg, #667eea, #764ba2)',
+                    'linear-gradient(45deg, #f093fb, #f5576c)'
+                ];
+                doti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                this.container.appendChild(doti);
+                
+                const dotiObj = {
+                    element: doti,
+                    x: x,
+                    y: y,
+                    speed: 2 + Math.random() * 3,
+                    wiggleOffset: Math.random() * Math.PI * 2,
+                    collected: false
+                };
+                
+                this.dotiObjects.push(dotiObj);
+                
+                // 클릭 이벤트
+                doti.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (!dotiObj.collected) {
+                        this.collectDoti(dotiObj);
+                    }
+                });
+                
+                this.animateDoti(dotiObj);
+            }
+
+            animateDoti(dotiObj) {
+                const animate = () => {
+                    if (!this.gameRunning || !dotiObj.element.parentNode) return;
+                    
+                    dotiObj.y += dotiObj.speed;
+                    dotiObj.wiggleOffset += 0.1;
+                    
+                    const wiggleX = Math.sin(dotiObj.wiggleOffset) * 20;
+                    
+                    dotiObj.element.style.top = dotiObj.y + 'px';
+                    dotiObj.element.style.left = (dotiObj.x + wiggleX) + 'px';
+                    
+                    // 화면 아래로 떨어지면 제거
+                    if (dotiObj.y > window.innerHeight + 60) {
+                        this.removeDoti(dotiObj);
+                        this.combo = 0;
+                        this.updateUI();
+                        return;
+                    }
+                    
+                    requestAnimationFrame(animate);
+                };
+                animate();
+            }
+
+            collectDoti(dotiObj) {
+                if (dotiObj.collected) return;
+                dotiObj.collected = true;
+                dotiObj.element.classList.add('collected');
+                this.score += 10 + (this.combo * 5);
+                this.combo++;
+                this.createParticles(dotiObj.x + 30, dotiObj.y + 30);
+                this.createTrail(dotiObj.x + 30, dotiObj.y + 30);
+                // 여러번 효과음이 겹쳐도 정상 재생되도록 매번 새 Audio 인스턴스 사용
+                const hoitja = new Audio('1111.mp3');
+                hoitja.currentTime = 8.2;
+                hoitja.volume = 1.0;
+                hoitja.play();
+                setTimeout(() => {
+                    hoitja.pause();
+                    hoitja.src = '';
+                }, 1200);
+                setTimeout(() => {
+                    this.removeDoti(dotiObj);
+                }, 1200);
+                this.updateUI();
+            }
+
+            removeDoti(dotiObj) {
+                const index = this.dotiObjects.indexOf(dotiObj);
+                if (index > -1) {
+                    this.dotiObjects.splice(index, 1);
+                    if (dotiObj.element.parentNode) {
+                        dotiObj.element.parentNode.removeChild(dotiObj.element);
+                    }
+                }
+            }
+
+            createParticles(x, y) {
+                for (let i = 0; i < 8; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle rhythm-treble';
+                    particle.style.left = x + Math.random() * 40 - 20 + 'px';
+                    particle.style.top = y + Math.random() * 40 - 20 + 'px';
+                    
+                    this.container.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, 1000);
+                }
+            }
+
+            createTrail(x, y) {
+                const trail = document.createElement('div');
+                trail.className = 'trail rhythm-medium';
+                trail.style.position = 'fixed';
+                trail.style.left = (x - 15) + 'px';
+                trail.style.top = (y - 15) + 'px';
+                trail.style.pointerEvents = 'none';
+                document.body.appendChild(trail);
+                setTimeout(() => {
+                    if (trail.parentNode) {
+                        trail.parentNode.removeChild(trail);
+                    }
+                }, 800);
+            }
+
+            handleClick(e) {
+                if (!this.gameRunning) return;
+                const clickX = e.clientX || e.pageX;
+                const clickY = e.clientY || e.pageY;
+                const nearbyDoti = this.dotiObjects.find(doti => {
+                    if (doti.collected) return false;
+                    const dx = (doti.x + 30) - clickX;
+                    const dy = (doti.y + 30) - clickY;
+                    return Math.sqrt(dx * dx + dy * dy) < 80;
+                });
+                if (nearbyDoti) {
+                    this.collectDoti(nearbyDoti);
+                } else {
+                    this.createMissEffect(clickX, clickY);
+                }
+            }
+
+            handleMouseMove(e) {
+                if (Math.random() < 0.2) {
+                    const x = e.clientX || e.pageX;
+                    const y = e.clientY || e.pageY;
+                    this.createTrail(x, y);
+                }
+            }
+
+            createMissEffect(x, y) {
+                const missEffect = document.createElement('div');
+                missEffect.className = 'rhythm-medium';
+                missEffect.style.position = 'fixed';
+                missEffect.style.left = (x - 10) + 'px';
+                missEffect.style.top = (y - 10) + 'px';
+                missEffect.style.width = '20px';
+                missEffect.style.height = '20px';
+                missEffect.style.borderRadius = '50%';
+                missEffect.style.background = 'rgba(255, 255, 255, 0.5)';
+                missEffect.style.animation = 'missRipple 0.6s ease-out forwards';
+                missEffect.style.pointerEvents = 'none';
+                document.body.appendChild(missEffect);
+                setTimeout(() => {
+                    if (missEffect.parentNode) {
+                        missEffect.parentNode.removeChild(missEffect);
+                    }
+                }, 600);
+            }
+
+            updateUI() {
+                document.getElementById('score').textContent = this.score;
+                document.getElementById('combo').textContent = this.combo;
+                document.getElementById('timer').textContent = `시간: ${this.timeLeft}`;
+            }
+        }
+
+        let game;
+
+        // 음악 활성화 함수
+        function activateMusic() {
+            musicElement.play().then(() => {
+                rythm.start();
+                isPlaying = true;
+                isMusicActivated = true;
+                
+                // 음악 활성화 화면 숨기고 게임 시작 화면 표시
+                document.getElementById('musicActivationScreen').style.display = 'none';
+                document.getElementById('startScreen').style.display = 'flex';
+            }).catch(error => {
+                console.log('음악 재생 실패:', error);
+                // 음악 재생에 실패해도 게임은 시작할 수 있도록
+                isMusicActivated = false;
+                document.getElementById('musicActivationScreen').style.display = 'none';
+                document.getElementById('startScreen').style.display = 'flex';
+            });
+        }
+
+        function changeVolume(volume) {
+            if (musicElement) {
+                musicElement.volume = volume;
+            }
+        }
+
+        function startGame() {
+            if (!game) {
+                game = new DinoDanceGame();
+            }
+            game.start();
+        }
+
+        function restartGame() {
+            if (game) {
+                game.start();
+            }
+        }
+
+        // 게임 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            // 음악 활성화 화면이 우선 보이도록, startScreen은 기본적으로 숨김
+            document.getElementById('musicActivationScreen').style.display = 'flex';
+            document.getElementById('startScreen').style.display = 'none';
+            game = new DinoDanceGame();
+        });
+
+        // 페이지를 떠날 때 음악 정리
+        window.addEventListener('beforeunload', () => {
+            if (rythm) {
+                rythm.stop();
+            }
+        });
+
+        // Rythm.js 병맛 효과 대량 추가
+        function addCrazyRythmEffects() {
+            if (!window.Rythm || !rythm) return;
+            // rotate
+            rythm.addRythm('rythm-rotate', 'rotateZ', 0, 8000, { min: -30, max: 30 });
+            // scale
+            rythm.addRythm('rythm-scale', 'scale', 0, 8000, { min: 0.7, max: 1.5 });
+            // border color
+            rythm.addRythm('rythm-border', 'borderColor', 0, 8000, { from: [255,255,255], to: [255,0,255] });
+            // box shadow
+            rythm.addRythm('rythm-shadow', 'boxShadow', 0, 8000, { from: '0 0 10px #fff', to: '0 0 40px #ff0' });
+            // background color
+            rythm.addRythm('rythm-colorful', 'color', 0, 8000, { from: [255,255,255], to: [255,107,107] });
+            // wiggle (skew)
+            rythm.addRythm('rythm-wiggle', 'skewX', 0, 8000, { min: -30, max: 30 });
+            // skew
+            rythm.addRythm('rythm-skew', 'skewY', 0, 8000, { min: -20, max: 20 });
+            // flip
+            rythm.addRythm('rythm-flip', 'rotateY', 0, 8000, { min: 0, max: 360 });
+            // glow
+            rythm.addRythm('rythm-glow', 'boxShadow', 0, 8000, { from: '0 0 10px #fff', to: '0 0 40px #0ff' });
+            // jelly
+            rythm.addRythm('rythm-jelly', 'scale', 0, 8000, { min: 0.8, max: 1.3 });
+
+            // intense global and UI effects
+            rythm.addRythm('rhythm-shake', 'translateX', 0, 300, { min: -12, max: 12 });
+            rythm.addRythm('rhythm-shake', 'translateY', 0, 300, { min: -12, max: 12 });
+            rythm.addRythm('rhythm-blur', 'blur', 0, 1200, { min: 0, max: 8 });
+            rythm.addRythm('rhythm-glow', 'boxShadow', 0, 700, { from: '0 0 0px rgba(0,0,0,0)', to: '0 0 60px rgba(255,200,100,0.95)' });
+            rythm.addRythm('rhythm-warp', 'skewX', 0, 700, { min: -12, max: 12 });
+            rythm.addRythm('rhythm-warp', 'skewY', 0, 700, { min: -12, max: 12 });
+            rythm.addRythm('rhythm-fontdance', 'letterSpacing', 0, 400, { min: -3, max: 8 });
+            rythm.addRythm('rhythm-fontdance', 'translateY', 0, 500, { min: -6, max: 6 });
+            rythm.addRythm('rhythm-buttonpop', 'scale', 0, 500, { min: 0.85, max: 1.4 });
+
+            // target specific selectors for broad effect mapping
+            // body/backdrop blur
+            rythm.addRythm('global-blur', 'blur', 0, 1200, { min: 0, max: 8 });
+            // UI container wobble
+            rythm.addRythm('game-container', 'rotateZ', 0, 1200, { min: -3, max: 3 });
+            // score and combo font dance
+            rythm.addRythm('rythm-scale', 'translateY', 0, 600, { min: -6, max: 6 });
+            // buttons pop and glow
+            rythm.addRythm('start-button', 'scale', 0, 600, { min: 0.9, max: 1.2 });
+            rythm.addRythm('music-activate-button', 'scale', 0, 600, { min: 0.9, max: 1.25 });
+            // doti specific jitter
+            rythm.addRythm('doti-baby', 'scale', 0, 500, { min: 0.9, max: 1.25 });
+            rythm.addRythm('doti-baby', 'rotateZ', 0, 500, { min: -45, max: 45 });
+        }
+
+        // Rythm.js가 준비되면 효과 추가
+        setTimeout(() => {
+            addCrazyRythmEffects();
+        }, 1000);
+    </script>
+</body>
+</html>
