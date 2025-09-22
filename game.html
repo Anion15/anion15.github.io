@@ -1473,7 +1473,7 @@
                         this.handleClick(touch);
                         this.addClickEffect(touch.clientX, touch.clientY);
                     }
-                });
+                }, { passive: false });
             }
 
             addClickEffect(x, y) {
@@ -1824,7 +1824,7 @@
                 
                 // 효과음 재생 (여러 개 겹쳐도 OK)
                 try {
-                    const hoitja = new Audio('호잇짜.mp3');
+                    const hoitja = new Audio('1111.mp3');
                     hoitja.currentTime = 8.2;
                     hoitja.volume = 0.8;
                     hoitja.playbackRate = 0.8 + Math.random() * 0.4; // 피치 변화
