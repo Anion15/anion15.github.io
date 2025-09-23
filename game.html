@@ -1722,7 +1722,10 @@
                     element: doti,
                     x: x,
                     y: y,
-                    speed: 2 + Math.random() * 4,
+                    // increased base speed and added acceleration properties
+                    speed: 3 + Math.random() * 5, // was 2 + Math.random()*4
+                    acceleration: 0.02 + Math.random() * 0.06, // per-frame speed increase
+                    maxSpeed: 10 + Math.random() * 2.5, // safety cap for speed
                     wiggleOffset: Math.random() * Math.PI * 2,
                     rotationSpeed: Math.random() * 10 - 5,
                     collected: false
@@ -1744,6 +1747,8 @@
                 const animate = () => {
                     if (!this.gameRunning || !dotiObj.element.parentNode) return;
                     
+                    // apply acceleration so doti fall faster over time (with cap)
+                    dotiObj.speed = Math.min(dotiObj.maxSpeed, dotiObj.speed + dotiObj.acceleration);
                     dotiObj.y += dotiObj.speed;
                     dotiObj.wiggleOffset += 0.2;
                     dotiObj.rotationSpeed += 0.1;
