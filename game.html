@@ -1718,6 +1718,9 @@
                 
                 this.container.appendChild(doti);
                 
+                // detect mobile (simple UA check)
+                const isMobile = /Mobi|Android|iPhone|iPad|iPod|IEMobile|BlackBerry|Opera Mini/i.test(navigator.userAgent);
+
                 const dotiObj = {
                     element: doti,
                     x: x,
@@ -1725,7 +1728,8 @@
                     // increased base speed and added acceleration properties
                     speed: 3 + Math.random() * 5, // was 2 + Math.random()*4
                     acceleration: 0.02 + Math.random() * 0.06, // per-frame speed increase
-                    maxSpeed: 10 + Math.random() * 2.5, // safety cap for speed
+                    // platform-specific maxSpeed: higher cap on mobile, lower on PC
+                    maxSpeed: isMobile ? (10 + Math.random() * 2.5) : (3 + Math.random() * 2.5),
                     wiggleOffset: Math.random() * Math.PI * 2,
                     rotationSpeed: Math.random() * 10 - 5,
                     collected: false
