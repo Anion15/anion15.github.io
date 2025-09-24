@@ -2031,7 +2031,7 @@
                 this.score += 10 + (this.combo * 5);
                 this.combo++;
                 
-                // 수집 시 극도로 화려한 효과
+                // 수집 시 화려한 효과 (카메라 떨림 제외)
                 this.createMegaParticles(dotiObj.x + 30, dotiObj.y + 30);
                 this.createCollectExplosion(dotiObj.x + 30, dotiObj.y + 30);
                 this.addScorePopup(dotiObj.x + 30, dotiObj.y + 30);
@@ -2064,29 +2064,24 @@
             }
 
             triggerComboEffect() {
-                // 5콤보마다 화면 전체가 미친듯이 축하
+                // 5콤보마다 화면 효과 (떨림 제거)
                 const container = document.getElementById('gameContainer');
-                container.classList.add('rainbow-spin', 'jelly-bounce');
-                container.style.animation = 'comboMadness 1s ease-in-out';
+                container.classList.add('rainbow-spin');
                 
-                // 콤보 축하 CSS
+                // 콤보 축하 CSS - 떨림 없이 색상 변화만
                 const style = document.createElement('style');
                 style.textContent = `
                     @keyframes comboMadness {
                         0%, 100% { 
-                            transform: scale(1) rotate(0deg);
                             filter: hue-rotate(0deg) brightness(1) contrast(1);
                         }
                         25% { 
-                            transform: scale(1.05) rotate(5deg);
                             filter: hue-rotate(90deg) brightness(1.5) contrast(2);
                         }
                         50% { 
-                            transform: scale(0.95) rotate(-3deg);
                             filter: hue-rotate(180deg) brightness(2) contrast(1.5);
                         }
                         75% { 
-                            transform: scale(1.08) rotate(8deg);
                             filter: hue-rotate(270deg) brightness(1.8) contrast(2.5);
                         }
                     }
