@@ -2147,7 +2147,7 @@
 
             createCollectExplosion(x, y) {
                 // 수집 시 대폭발 효과
-                for (let i = 0; i < 15; i++) {
+                for (let i = 0; i < 10; i++) {
                     const explosion = document.createElement('div');
                     explosion.className = 'rainbow-spin pulse-crazy';
                     explosion.style.position = 'fixed';
@@ -2204,7 +2204,7 @@
 
             createMegaParticles(x, y) {
                 // 기존 파티클보다 훨씬 화려한 메가 파티클
-                for (let i = 0; i < 25; i++) {
+                for (let i = 0; i < 20; i++) {
                     const particle = document.createElement('div');
                     particle.className = 'particle rainbow-spin neon-glow jelly-bounce';
                     particle.style.left = x + Math.random() * 80 - 40 + 'px';
