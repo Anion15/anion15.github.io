@@ -429,6 +429,11 @@
       background-color: #6b7280;
     }
 
+    .break-keep {
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+
     /* 다크 테마 버튼 구별 - 더 강력한 스타일링 */
     .dark-theme #latest-btn,
     .dark-theme #popular-btn {
@@ -578,9 +583,9 @@
 
 <section id="hero"
   class="h-screen flex flex-col items-center justify-center
-         text-center bg-neutral-900">
+         text-center bg-neutral-900 break-keep">
 
-  <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-gray-100">
+  <h1 id="sksdbswndnjsdlekz" class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-gray-100">
     익명이라는 자유, 그 안의 진심.<br />
   <span class="inline-block text-gray-300 mt-6">
     <span class="animate-flip inline-block">상정</span><span class="inline-block">인사이드.</span>
@@ -597,10 +602,10 @@
 </section>
 <section id="fvSection"
     class="min-h-[250vh] flex flex-col items-center justify-center
-         text-center bg-neutral-950 px-6 hidden">
+         text-center bg-neutral-950 px-6 hidden break-keep">
 
   <div class="max-w-3xl opacity-0 translate-y-6 transition-all duration-700">
-    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-100 mb-6">
+    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-100 mb-16">
       당신의 진짜 목소리가 들리는 곳
     </h2>
 
@@ -678,6 +683,41 @@ if (params.has('fv')) {
   fvSection.remove(); // fv 없으면 아예 존재 삭제
 }
 </script>
+<script>
+let isMobileLayout = null;
+
+function updateHeroText() {
+  const heroText = document.getElementById('sksdbswndnjsdlekz');
+  if (!heroText) return;
+
+  const nowMobile = window.innerWidth <= 462;
+
+  if (nowMobile === isMobileLayout) return;
+  isMobileLayout = nowMobile;
+
+  if (nowMobile) {
+    heroText.innerHTML = `
+      익명이라는 자유<br />
+      그 안의 진심.<br />
+      <span class="inline-block text-gray-300 mt-6">
+        <span class="animate-flip inline-block">상정</span><span class="inline-block">인사이드.</span>
+      </span>
+    `;
+  } else {
+    heroText.innerHTML = `
+      익명이라는 자유, 그 안의 진심.<br />
+      <span class="inline-block text-gray-300 mt-6">
+        <span class="animate-flip inline-block">상정</span><span class="inline-block">인사이드.</span>
+      </span>
+    `;
+  }
+}
+
+updateHeroText();
+
+window.addEventListener('resize', updateHeroText);
+</script>
+
 
 
 
